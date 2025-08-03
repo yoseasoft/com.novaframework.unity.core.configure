@@ -34,32 +34,14 @@ namespace CoreEngine
     /// </summary>
     internal static class SystemPath
     {
-        /// <summary>
-        /// 系统默认路径类型定义
-        /// </summary>
-        public enum DefaultPathType : int
-        {
-            None = 0,
-            OriginalResourcePath,
-            SourceCodePath,
-            ScriptFilePath,
-            MonoAotPath,
-            LinkLibraryPath,
-            DatatablePath,
-            ProtocolPath,
-            UguiPath,
-            TguiPath,
-            FguiPath,
-        }
-
-        static readonly IDictionary<DefaultPathType, string> _cachePaths = new Dictionary<DefaultPathType, string>();
+        static readonly IDictionary<ResourcePathType, string> _cachePaths = new Dictionary<ResourcePathType, string>();
 
         /// <summary>
         /// 通过指定的路径类型，获取路径值
         /// </summary>
         /// <param name="type">路径类型</param>
         /// <returns>返回路径值</returns>
-        public static string GetPath(DefaultPathType type)
+        public static string GetPath(ResourcePathType type)
         {
             if (_cachePaths.TryGetValue(type, out string path))
             {

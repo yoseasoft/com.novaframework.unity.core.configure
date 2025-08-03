@@ -32,6 +32,13 @@ namespace CoreEngine
     /// </summary>
     internal static class DynamicLibrary
     {
+        /// <summary>
+        /// 程序库许可通过检测的回调句柄定义
+        /// </summary>
+        /// <param name="info">库信息</param>
+        /// <returns>程序库通过许可返回true，否则返回false</returns>
+        public delegate bool LibraryInfoLicenseApprovedCallback(LibraryInfo info);
+
         /**
          * 核心库，程序启动必须装载，所以为默认配置
          */
@@ -52,11 +59,11 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 1, name = NovaLibraryName, tutorial = false, reloadable = false },
-            new LibraryInfo() { order = 2, name = NovaEngineName,  tutorial = false, reloadable = false },
-            new LibraryInfo() { order = 3, name = NovaBasicName,   tutorial = false, reloadable = false },
-            new LibraryInfo() { order = 4, name = NovaImportName,  tutorial = false, reloadable = false },
-            new LibraryInfo() { order = 5, name = NovaSampleName,  tutorial = true,  reloadable = false },
+            new LibraryInfo() { order = 1, name = NovaLibraryName, tutorial = false, reloadable = false, source_path = null },
+            new LibraryInfo() { order = 2, name = NovaEngineName,  tutorial = false, reloadable = false, source_path = null },
+            new LibraryInfo() { order = 3, name = NovaBasicName,   tutorial = false, reloadable = false, source_path = null },
+            new LibraryInfo() { order = 4, name = NovaImportName,  tutorial = false, reloadable = false, source_path = null },
+            new LibraryInfo() { order = 5, name = NovaSampleName,  tutorial = true,  reloadable = false, source_path = null },
         };
 
         /// <summary>
@@ -64,18 +71,18 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 11, name = "Agen", tutorial = false, reloadable = false },
-            new LibraryInfo() { order = 12, name = "Game", tutorial = false, reloadable = false },
-            new LibraryInfo() { order = 13, name = "GameHotfix", tutorial = false, reloadable = true },
+            new LibraryInfo() { order = 11, name = "Agen",       tutorial = false, reloadable = false, source_path = null },
+            new LibraryInfo() { order = 12, name = "Game",       tutorial = false, reloadable = false, source_path = null },
+            new LibraryInfo() { order = 13, name = "GameHotfix", tutorial = false, reloadable = true,  source_path = null },
         };
 
         /// <summary>
         /// 获取当前系统注册的全部程序集名称<br/>
-        /// 若指定是否开启教程，则将根据教程开启状态返回带有教程库的名称列表
+        /// 若指定是否开启检测回调，若开启则将根据检测结果过滤程序库的名称列表
         /// </summary>
-        /// <param name="tutorial">教程状态标识</param>
+        /// <param name="callback">过滤回调</param>
         /// <returns>返回全部程序集的名称列表</returns>
-        public static IList<string> GetAllAssemblyNames(bool tutorial = false)
+        public static IList<string> GetAllAssemblyNames(LibraryInfoLicenseApprovedCallback callback = null)
         {
             List<string> assemblyNames = new ();
 
@@ -83,7 +90,7 @@ namespace CoreEngine
             for (int n = 0; n < _coreLibraries.Count; ++n)
             {
                 LibraryInfo info = _coreLibraries[n];
-                if (!tutorial && info.tutorial)
+                if (null == callback || false == callback(info))
                     continue;
 
                 assemblyNames.Add(info.name);
@@ -93,7 +100,7 @@ namespace CoreEngine
             for (int n = 0; n < _gameLibraries.Count; ++n)
             {
                 LibraryInfo info = _gameLibraries[n];
-                if (!tutorial && info.tutorial)
+                if (null == callback || false == callback(info))
                     continue;
 
                 assemblyNames.Add(info.name);
@@ -104,11 +111,11 @@ namespace CoreEngine
 
         /// <summary>
         /// 获取当前系统注册的全部可重载程序集名称<br/>
-        /// 若指定是否开启教程，则将根据教程开启状态返回带有教程库的名称列表
+        /// 若指定是否开启检测回调，若开启则将根据检测结果过滤程序库的名称列表
         /// </summary>
-        /// <param name="tutorial">教程状态标识</param>
+        /// <param name="callback">过滤回调</param>
         /// <returns>返回全部可重载程序集的名称列表</returns>
-        public static IList<string> GetAllReloadableAssemblyNames(bool tutorial = false)
+        public static IList<string> GetAllReloadableAssemblyNames(LibraryInfoLicenseApprovedCallback callback = null)
         {
             List<string> assemblyNames = new();
 
@@ -119,7 +126,7 @@ namespace CoreEngine
             for (int n = 0; n < _gameLibraries.Count; ++n)
             {
                 LibraryInfo info = _gameLibraries[n];
-                if (!tutorial && info.tutorial)
+                if (null == callback || false == callback(info))
                     continue;
 
                 if (info.reloadable)
@@ -127,6 +134,88 @@ namespace CoreEngine
             }
 
             return assemblyNames;
+        }
+
+        /// <summary>
+        /// 通过程序集名称查找对应源码路径
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>返回源码路径，若查找失败则返回null</returns>
+        /// <exception cref="System.IO.FileNotFoundException"></exception>
+        public static string GetSourcePathByAssemblyName(string assemblyName)
+        {
+            LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
+            if (null == info)
+            {
+                throw new System.IO.FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
+            }
+
+            if (string.IsNullOrEmpty(info.source_path))
+            {
+                // 核心库不提供源码路径
+                if (_coreLibraries.Contains(info))
+                {
+                    return null;
+                }
+
+                string source_dir = SystemPath.GetPath(ResourcePathType.SourceCodePath);
+                return System.IO.Path.Combine(source_dir, assemblyName);
+            }
+
+            return info.source_path;
+        }
+
+        /// <summary>
+        /// 通过程序集名称获取库文件路径
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>返回库文件路径</returns>
+        public static string GetLibraryFilePathByAssemblyName(string assemblyName)
+        {
+            LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
+            if (null == info)
+            {
+                throw new System.IO.FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
+            }
+
+            string library_dir = SystemPath.GetPath(ResourcePathType.LinkLibraryPath);
+            return System.IO.Path.Combine(library_dir, $"{assemblyName}.dll");
+        }
+
+        /// <summary>
+        /// 通过程序集名称获取二进制库文件路径
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>返回二进制库文件路径</returns>
+        public static string GetBinaryLibraryFilePathByAssemblyName(string assemblyName)
+        {
+            LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
+            if (null == info)
+            {
+                throw new System.IO.FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
+            }
+
+            string library_dir = SystemPath.GetPath(ResourcePathType.LinkLibraryPath);
+            return System.IO.Path.Combine(library_dir, $"{assemblyName}.dll.bytes");
+        }
+
+        /// <summary>
+        /// 通过程序集名称查找程序库对象实例
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>返回程序库实例，若查找失败则返回null</returns>
+        static LibraryInfo GetLibraryInfoByAssemblyName(string assemblyName)
+        {
+            for (int n = 0; n < _gameLibraries.Count; ++n)
+            {
+                LibraryInfo info = _gameLibraries[n];
+                if (assemblyName == info.name)
+                {
+                    return info;
+                }
+            }
+
+            return null;
         }
     }
 }

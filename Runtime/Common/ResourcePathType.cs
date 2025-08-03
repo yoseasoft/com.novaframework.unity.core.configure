@@ -23,13 +23,23 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-
-// 外部友元
-[assembly: InternalsVisibleTo("Nova.Boot")]
-[assembly: InternalsVisibleTo("Nova.Engine")]
-[assembly: InternalsVisibleTo("Nova.Basic")]
-
-[assembly: InternalsVisibleTo("Nova.Configure.Editor")]
-[assembly: InternalsVisibleTo("Nova.Boot.Editor")]
-[assembly: InternalsVisibleTo("Nova.Editor")]
+namespace CoreEngine
+{
+    /// <summary>
+    /// 系统资源路径类型定义
+    /// </summary>
+    internal enum ResourcePathType : int
+    {
+        None = 0,
+        OriginalResourcePath,
+        SourceCodePath,
+        ScriptFilePath,
+        MonoAotPath,
+        LinkLibraryPath,
+        DatatablePath,
+        ProtocolPath,
+        UguiPath,
+        TguiPath,
+        FguiPath,
+    }
+}

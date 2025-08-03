@@ -49,5 +49,10 @@ namespace CoreEngine
         /// 可重载的
         /// </summary>
         public bool reloadable;
+
+        /// <summary>
+        /// 源码路径
+        /// </summary>
+        public string source_path;
     }
 }
