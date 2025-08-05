@@ -77,6 +77,17 @@ namespace CoreEngine
         };
 
         /// <summary>
+        /// AOT元数据列表
+        /// </summary>
+        static readonly IList<string> _aotLibraries = new List<string>()
+        {
+            "System.Core.dll",
+            "System.dll",
+            "mscorlib.dll",
+            "UnityEngine.CoreModule.dll",
+        };
+
+        /// <summary>
         /// 获取当前系统注册的全部程序集名称<br/>
         /// 若指定是否开启检测回调，若开启则将根据检测结果过滤程序库的名称列表
         /// </summary>
@@ -134,6 +145,15 @@ namespace CoreEngine
             }
 
             return assemblyNames;
+        }
+
+        /// <summary>
+        /// 获取当前系统注册的全部元数据链接库名称
+        /// </summary>
+        /// <returns>返回全部元数据链接库的名称列表</returns>
+        public static IList<string> GetAllGenericAotNames()
+        {
+            return _aotLibraries;
         }
 
         /// <summary>

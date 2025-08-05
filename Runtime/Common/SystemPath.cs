@@ -68,6 +68,36 @@ namespace CoreEngine
         }
 
         /// <summary>
+        /// 通过指定的路径类型，获取路径值
+        /// </summary>
+        /// <param name="type">路径类型</param>
+        /// <param name="paths">路径其它部分</param>
+        /// <returns>返回路径值</returns>
+        public static string GetFilePath(ResourcePathType type, params string[] paths)
+        {
+            string path = GetPath(type);
+            if (string.IsNullOrEmpty(path))
+                return path;
+
+            return System.IO.Path.Combine(path, System.IO.Path.Combine(paths));
+        }
+
+        /// <summary>
+        /// 通过指定的路径名称，获取路径值
+        /// </summary>
+        /// <param name="key">路径名称</param>
+        /// <param name="paths">路径其它部分</param>
+        /// <returns>返回路径值</returns>
+        public static string GetFilePath(string key, params string[] paths)
+        {
+            string path = GetPath(key);
+            if (string.IsNullOrEmpty(path))
+                return path;
+
+            return System.IO.Path.Combine(path, System.IO.Path.Combine(paths));
+        }
+
+        /// <summary>
         /// 将大小写混合的成员名称转换为大写加下划线形式的名称
         /// 例如：“CoreEngineClassType”格式的名称将转换为“CORE_ENGINE_CLASS_TYPE”
         /// </summary>

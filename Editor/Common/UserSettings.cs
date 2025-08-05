@@ -27,17 +27,19 @@ using UnityEditor;
 namespace CoreEngine.Editor
 {
     /// <summary>
-    /// 用户设置参数持久化管理类，通常可以采用“EditorPrefs”和“EditorUserSettings”两种形式实现
-    ///
-    /// EditorPrefs
-    /// ‌适用范围广‌：适用于存储环境设定、位置、大小等与Unity编辑器相关的信息
-    /// ‌存储方式‌：存储在Windows注册表中，以大版本划分存储，如4.x版本和5.x版本
-    /// ‌查看方式‌：可以通过Windows注册表编辑器查看，路径为HKEY_CURRENT_USER\Software\Unity Technologies\UnityEditor 5.x‌
-    ///
-    /// EditorUserSettings
-    /// ‌‌数据加密‌：保存的数据都会被加密，适合存储个人信息或密码等敏感信息
-    /// ‌适用范围小‌：仅影响当前项目，不会影响到其他项目或编辑器设置‌
-    /// ‌存储方式‌：以加密形式保存在项目内的文件中，如Unity2021中保存在项目的UserSettings目录下的EditorUserSettings.asset‌
+    /// 用户设置参数持久化管理类，通常可以采用“EditorPrefs”和“EditorUserSettings”两种形式实现<br/>
+    /// <br/>
+    /// EditorPrefs<br/>
+    /// ‌适用范围广‌：适用于存储环境设定、位置、大小等与Unity编辑器相关的信息<br/>
+    /// ‌存储方式‌：存储在Windows注册表中，以大版本划分存储，如4.x版本和5.x版本<br/>
+    /// ‌查看方式‌：可以通过Windows注册表编辑器查看，路径为HKEY_CURRENT_USER\Software\Unity Technologies\UnityEditor 5.x‌<br/>
+    /// <br/>
+    /// EditorUserSettings<br/>
+    /// ‌‌数据加密‌：保存的数据都会被加密，适合存储个人信息或密码等敏感信息<br/>
+    /// ‌适用范围小‌：仅影响当前项目，不会影响到其他项目或编辑器设置‌<br/>
+    /// ‌存储方式‌：以加密形式保存在项目内的文件中，如Unity2021中保存在项目的UserSettings目录下的EditorUserSettings.asset‌<br/>
+    /// <br/>
+    /// 当前默认使用“EditorUserSettings”存储形式，用户可根据需求实时调整该设置
     /// </summary>
     public static class UserSettings
     {

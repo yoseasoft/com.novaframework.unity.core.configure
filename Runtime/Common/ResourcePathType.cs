@@ -39,7 +39,7 @@ namespace CoreEngine
         DatatablePath,
         ProtocolPath,
         UguiPath,
-        TguiPath,
-        FguiPath,
+        UiToolkitPath,
+        FairyguiPath,
     }
 }
