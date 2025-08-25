@@ -59,11 +59,11 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 1, name = NovaLibraryName, tutorial = false, reloadable = false, source_path = null },
-            new LibraryInfo() { order = 2, name = NovaEngineName,  tutorial = false, reloadable = false, source_path = null },
-            new LibraryInfo() { order = 3, name = NovaBasicName,   tutorial = false, reloadable = false, source_path = null },
-            new LibraryInfo() { order = 4, name = NovaImportName,  tutorial = false, reloadable = false, source_path = null },
-            new LibraryInfo() { order = 5, name = NovaSampleName,  tutorial = true,  reloadable = false, source_path = null },
+            new LibraryInfo() { order =  1, name = NovaLibraryName, source_path = null, tags = LibraryTag.Core },
+            new LibraryInfo() { order =  2, name = NovaEngineName,  source_path = null, tags = LibraryTag.Core },
+            new LibraryInfo() { order =  3, name = NovaBasicName,   source_path = null, tags = LibraryTag.Core },
+            new LibraryInfo() { order =  4, name = NovaImportName,  source_path = null, tags = LibraryTag.Core },
+            new LibraryInfo() { order = 11, name = NovaSampleName,  source_path = null, tags = LibraryTag.Core | LibraryTag.Tutorial },
         };
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 11, name = "Agen",       tutorial = false, reloadable = false, source_path = null },
-            new LibraryInfo() { order = 12, name = "Game",       tutorial = false, reloadable = false, source_path = null },
-            new LibraryInfo() { order = 13, name = "GameHotfix", tutorial = false, reloadable = true,  source_path = null },
+            new LibraryInfo() { order = 101, name = "Agen",       source_path = null, tags = LibraryTag.Game | LibraryTag.Shared },
+            new LibraryInfo() { order = 102, name = "Game",       source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 103, name = "GameHotfix", source_path = null, tags = LibraryTag.Game | LibraryTag.Hotfix },
         };
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace CoreEngine
                 if (null == callback || false == callback(info))
                     continue;
 
-                if (info.reloadable)
+                if (info.IsContainsTag(LibraryTag.Hotfix))
                     assemblyNames.Add(info.name);
             }
 

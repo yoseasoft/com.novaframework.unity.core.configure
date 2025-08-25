@@ -26,43 +26,45 @@
 namespace CoreEngine
 {
     /// <summary>
-    /// 框架加载的程序库的信息对象类，用于描述程序库的基础属性
+    /// 框架加载的程序库的标签类型的枚举定义
     /// </summary>
-    public class LibraryInfo
+    [System.Flags]
+    public enum LibraryTag : int
     {
         /// <summary>
-        /// 序号
+        /// 无效
         /// </summary>
-        public int order { get; internal set; }
+        Unknown = 0x0000,
 
         /// <summary>
-        /// 程序库名称
+        /// 核心库
         /// </summary>
-        public string name { get; internal set; }
+        Core = 0x0001,
+        /// <summary>
+        /// 插件库
+        /// </summary>
+        Package = 0x0002,
+        /// <summary>
+        /// 业务库
+        /// </summary>
+        Game = 0x0004,
 
         /// <summary>
-        /// 源码路径
+        /// 演示库
         /// </summary>
-        public string source_path { get; internal set; }
+        Tutorial = 0x0010,
+        /// <summary>
+        /// 测试库
+        /// </summary>
+        Test = 0x0020,
 
         /// <summary>
-        /// 标签集合
+        /// 共享模组（编辑器环境下需要使用）
         /// </summary>
-        public LibraryTag tags { get; internal set; }
-
+        Shared = 0x0100,
         /// <summary>
-        /// 检测当前程序库的标签中是否存在指定标签类型
+        /// 重载模组（支持热重载）
         /// </summary>
-        /// <param name="tag">标签类型</param>
-        /// <returns>若存在指定标签则返回true，否则返回false</returns>
-        public bool IsContainsTag(LibraryTag tag)
-        {
-            if ((tags & tag) == tag)
-            {
-                return true;
-            }
-
-            return false;
-        }
+        Hotfix = 0x0200,
     }
 }
