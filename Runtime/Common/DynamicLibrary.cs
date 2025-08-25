@@ -224,7 +224,7 @@ namespace CoreEngine
         /// </summary>
         /// <param name="assemblyName">程序集名称</param>
         /// <returns>返回程序库实例，若查找失败则返回null</returns>
-        static LibraryInfo GetLibraryInfoByAssemblyName(string assemblyName)
+        public static LibraryInfo GetLibraryInfoByAssemblyName(string assemblyName)
         {
             for (int n = 0; n < _gameLibraries.Count; ++n)
             {
