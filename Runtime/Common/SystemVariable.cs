@@ -40,9 +40,8 @@ namespace CoreEngine
             {"MONO_AOT_PATH", "Assets/_Resources/Aot"},
             {"LINK_LIBRARY_PATH", "Assets/_Resources/Code"},
             {"DATATABLE_PATH", "Assets/_Resources/Config"},
-            {"PROTOCOL_PATH", "Assets/_Resources/Protobuf"},
             {"UGUI_PATH", "Assets/_Resources/Gui/"},
-            {"UI_TOOLKIT_PATH", "Assets/_Resources/Gui/"},
+            {"UITOOLKIT_PATH", "Assets/_Resources/Gui/"},
             {"FAIRYGUI_PATH", "Assets/_Resources/Gui/"},
         };
 
