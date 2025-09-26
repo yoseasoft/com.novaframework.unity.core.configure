@@ -226,6 +226,15 @@ namespace CoreEngine
         /// <returns>返回程序库实例，若查找失败则返回null</returns>
         public static LibraryInfo GetLibraryInfoByAssemblyName(string assemblyName)
         {
+            for (int n = 0; n < _coreLibraries.Count; ++n)
+            {
+                LibraryInfo info = _coreLibraries[n];
+                if (assemblyName == info.name)
+                {
+                    return info;
+                }
+            }
+
             for (int n = 0; n < _gameLibraries.Count; ++n)
             {
                 LibraryInfo info = _gameLibraries[n];
