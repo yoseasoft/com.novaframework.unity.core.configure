@@ -62,6 +62,7 @@ namespace CoreEngine
         /// </summary>
         /// <param name="key">路径名称</param>
         /// <returns>返回路径值</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static string GetPath(string key)
         {
             return SystemVariables.GetValue(key);

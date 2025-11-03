@@ -41,7 +41,7 @@ namespace CoreEngine
             {"LINK_LIBRARY_PATH", "Assets/_Resources/Code"},
             {"BEAN_PROFILE_PATH", "Assets/_Resources/Bean"},
             {"DATATABLE_PATH", "Assets/_Resources/Config"},
-            {"UGUI_PATH", "Assets/_Resources/Gui/"},
+            {"UGUI_PATH", "Assets/_Resources/UGui/"},
             {"UITOOLKIT_PATH", "Assets/_Resources/Gui/"},
             {"FAIRYGUI_PATH", "Assets/_Resources/Gui/"},
         };
