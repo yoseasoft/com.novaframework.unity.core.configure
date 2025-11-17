@@ -47,7 +47,6 @@ namespace CoreEngine
         const string NovaEngineName  = @"Nova.Engine";
         const string NovaBasicName   = @"Nova.Basic";
         const string NovaImportName  = @"Nova.Import";
-        const string NovaSampleName  = @"Nova.Sample";
 
         /// <summary>
         /// 外部控制入口，固定设置
@@ -63,7 +62,6 @@ namespace CoreEngine
             new LibraryInfo() { order =  2, name = NovaEngineName,  source_path = null, tags = LibraryTag.Core },
             new LibraryInfo() { order =  3, name = NovaBasicName,   source_path = null, tags = LibraryTag.Core },
             new LibraryInfo() { order =  4, name = NovaImportName,  source_path = null, tags = LibraryTag.Core },
-            new LibraryInfo() { order = 11, name = NovaSampleName,  source_path = null, tags = LibraryTag.Core | LibraryTag.Tutorial },
         };
 
         /// <summary>
@@ -74,6 +72,7 @@ namespace CoreEngine
             new LibraryInfo() { order = 101, name = "Agen",       source_path = null, tags = LibraryTag.Game | LibraryTag.Shared },
             new LibraryInfo() { order = 102, name = "Game",       source_path = null, tags = LibraryTag.Game },
             new LibraryInfo() { order = 103, name = "GameHotfix", source_path = null, tags = LibraryTag.Game | LibraryTag.Hotfix },
+            new LibraryInfo() { order = 111, name = "Game.Sample", source_path = null, tags = LibraryTag.Game | LibraryTag.Tutorial },
         };
 
         /// <summary>
