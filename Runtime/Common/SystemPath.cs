@@ -24,8 +24,8 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using SystemStringBuilder = System.Text.StringBuilder;
+using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace CoreEngine
 {
@@ -62,7 +62,7 @@ namespace CoreEngine
         /// </summary>
         /// <param name="key">路径名称</param>
         /// <returns>返回路径值</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetPath(string key)
         {
             return SystemVariables.GetValue(key);
@@ -111,7 +111,7 @@ namespace CoreEngine
                 return memberName;
             }
 
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
             int start = 0;
             int pos = 1;
 
