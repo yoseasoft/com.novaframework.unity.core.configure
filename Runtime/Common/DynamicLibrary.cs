@@ -73,6 +73,10 @@ namespace CoreEngine
             new LibraryInfo() { order = 102, name = "Game",       source_path = null, tags = LibraryTag.Game },
             new LibraryInfo() { order = 103, name = "GameHotfix", source_path = null, tags = LibraryTag.Game | LibraryTag.Hotfix },
             new LibraryInfo() { order = 111, name = "Game.Sample", source_path = null, tags = LibraryTag.Game | LibraryTag.Tutorial },
+            new LibraryInfo() { order = 121, name = "Game.Module.Protocol.Protobuf", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 122, name = "Game.Module.Protocol.Streambuf", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 123, name = "Game.Module.View.Fairygui", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 124, name = "Game.Module.View.Ugui", source_path = null, tags = LibraryTag.Game },
         };
 
         /// <summary>
