@@ -1,6 +1,8 @@
-## NovaFramework - Unity 核心库
+## NovaFramework - Unity 配置库
 
-NovaFramework的配置库，提供程序启动相关的配置管理。
+NovaFramework的配置库，提供程序启动相关的配置管理。  
+
+关于更多引擎介绍，请前往[NovaFramework](https://github.com/yoseasoft/NovaFramework)查看。
 
 ## 使用文档
 
