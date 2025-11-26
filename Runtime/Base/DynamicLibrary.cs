@@ -65,18 +65,29 @@ namespace CoreEngine
         };
 
         /// <summary>
+        /// 模块库列表
+        /// </summary>
+        static readonly IList<LibraryInfo> _moduleLibraries = new List<LibraryInfo>()
+        {
+            new LibraryInfo() { order = 111, name = "Game.Module.Protocol.Protobuf", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 112, name = "Game.Module.Protocol.Streambuf", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 121, name = "Game.Module.View.Fairygui", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 122, name = "Game.Module.View.Ugui", source_path = null, tags = LibraryTag.Game },
+        };
+
+        /// <summary>
         /// 业务库列表
         /// </summary>
         static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 101, name = "Agen",       source_path = null, tags = LibraryTag.Game | LibraryTag.Shared },
-            new LibraryInfo() { order = 102, name = "Game",       source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 103, name = "GameHotfix", source_path = null, tags = LibraryTag.Game | LibraryTag.Hotfix },
-            new LibraryInfo() { order = 111, name = "Game.Sample", source_path = null, tags = LibraryTag.Game | LibraryTag.Tutorial },
-            new LibraryInfo() { order = 121, name = "Game.Module.Protocol.Protobuf", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 122, name = "Game.Module.Protocol.Streambuf", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 123, name = "Game.Module.View.Fairygui", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 124, name = "Game.Module.View.Ugui", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 1101, name = "Agen",       source_path = null, tags = LibraryTag.Game | LibraryTag.Shared },
+            new LibraryInfo() { order = 1102, name = "Game",       source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 1103, name = "GameHotfix", source_path = null, tags = LibraryTag.Game | LibraryTag.Hotfix },
+            new LibraryInfo() { order = 1111, name = "Game.Sample", source_path = null, tags = LibraryTag.Game | LibraryTag.Tutorial },
+            new LibraryInfo() { order = 1121, name = "Game.Module.Protocol.Protobuf", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 1122, name = "Game.Module.Protocol.Streambuf", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 1123, name = "Game.Module.View.Fairygui", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 1124, name = "Game.Module.View.Ugui", source_path = null, tags = LibraryTag.Game },
         };
 
         /// <summary>
