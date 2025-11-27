@@ -29,6 +29,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Nova.Boot")]
 [assembly: InternalsVisibleTo("Nova.Engine")]
 [assembly: InternalsVisibleTo("Nova.Basic")]
+[assembly: InternalsVisibleTo("Nova.Import")]
 
 [assembly: InternalsVisibleTo("Nova.Configure.Editor")]
 [assembly: InternalsVisibleTo("Nova.Boot.Editor")]
