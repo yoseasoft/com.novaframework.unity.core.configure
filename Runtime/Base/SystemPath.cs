@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Runtime.CompilerServices;
 
@@ -80,7 +81,7 @@ namespace CoreEngine
             if (string.IsNullOrEmpty(path))
                 return path;
 
-            return System.IO.Path.Combine(path, System.IO.Path.Combine(paths));
+            return Path.Combine(path, Path.Combine(paths)).Replace('\\', '/');
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace CoreEngine
             if (string.IsNullOrEmpty(path))
                 return path;
 
-            return System.IO.Path.Combine(path, System.IO.Path.Combine(paths));
+            return Path.Combine(path, Path.Combine(paths)).Replace('\\', '/');
         }
 
         /// <summary>
