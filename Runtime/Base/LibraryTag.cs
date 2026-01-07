@@ -2,7 +2,7 @@
 /// CoreEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,30 +41,34 @@ namespace CoreEngine
         /// </summary>
         Core = 0x0001,
         /// <summary>
-        /// 插件库
+        /// 模块库
         /// </summary>
-        Package = 0x0002,
+        Module = 0x0002,
         /// <summary>
         /// 业务库
         /// </summary>
         Game = 0x0004,
 
         /// <summary>
-        /// 演示库
-        /// </summary>
-        Tutorial = 0x0010,
-        /// <summary>
-        /// 测试库
-        /// </summary>
-        Test = 0x0020,
-
-        /// <summary>
         /// 共享模组（编辑器环境下需要使用）
         /// </summary>
-        Shared = 0x0100,
+        Shared = 0x0010,
         /// <summary>
         /// 重载模组（支持热重载）
         /// </summary>
-        Hotfix = 0x0200,
+        Hotfix = 0x0020,
+        /// <summary>
+        /// 编译模组
+        /// </summary>
+        Compile = 0x0040,
+
+        /// <summary>
+        /// 演示库
+        /// </summary>
+        Tutorial = 0x0100,
+        /// <summary>
+        /// 测试库
+        /// </summary>
+        Test = 0x0200,
     }
 }

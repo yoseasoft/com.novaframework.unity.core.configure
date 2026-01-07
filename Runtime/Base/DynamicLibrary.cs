@@ -2,7 +2,7 @@
 /// CoreEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -58,10 +58,10 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order =  1, name = NovaLibraryName, source_path = null, tags = LibraryTag.Core },
-            new LibraryInfo() { order =  2, name = NovaEngineName,  source_path = null, tags = LibraryTag.Core },
-            new LibraryInfo() { order =  3, name = NovaBasicName,   source_path = null, tags = LibraryTag.Core },
-            new LibraryInfo() { order =  4, name = NovaImportName,  source_path = null, tags = LibraryTag.Core },
+            new LibraryInfo() { order =  1, name = NovaLibraryName, tags = LibraryTag.Core },
+            new LibraryInfo() { order =  2, name = NovaEngineName,  tags = LibraryTag.Core },
+            new LibraryInfo() { order =  3, name = NovaBasicName,   tags = LibraryTag.Core },
+            new LibraryInfo() { order =  4, name = NovaImportName,  tags = LibraryTag.Core },
         };
 
         /// <summary>
@@ -69,10 +69,11 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _moduleLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 111, name = "Game.Module.Protocol.Protobuf", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 112, name = "Game.Module.Protocol.Streambuf", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 121, name = "Game.Module.View.Fairygui", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 122, name = "Game.Module.View.Ugui", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 111, name = "Game.Module.Protocol.Protobuf", tags = LibraryTag.Module },
+            new LibraryInfo() { order = 112, name = "Game.Module.Protocol.Streambuf", tags = LibraryTag.Module },
+            new LibraryInfo() { order = 121, name = "Game.Module.View.Fairygui", tags = LibraryTag.Module | LibraryTag.Compile },
+            new LibraryInfo() { order = 122, name = "Game.Module.View.Ugui", tags = LibraryTag.Module },
+            new LibraryInfo() { order = 211, name = "Game.Sample", tags = LibraryTag.Module | LibraryTag.Compile | LibraryTag.Tutorial },
         };
 
         /// <summary>
@@ -80,14 +81,11 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 1101, name = "Agen",       source_path = null, tags = LibraryTag.Game | LibraryTag.Shared },
-            new LibraryInfo() { order = 1102, name = "Game",       source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 1103, name = "GameHotfix", source_path = null, tags = LibraryTag.Game | LibraryTag.Hotfix },
-            new LibraryInfo() { order = 1111, name = "Game.Sample", source_path = null, tags = LibraryTag.Game | LibraryTag.Tutorial },
-            new LibraryInfo() { order = 1121, name = "Game.Module.Protocol.Protobuf", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 1122, name = "Game.Module.Protocol.Streambuf", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 1123, name = "Game.Module.View.Fairygui", source_path = null, tags = LibraryTag.Game },
-            new LibraryInfo() { order = 1124, name = "Game.Module.View.Ugui", source_path = null, tags = LibraryTag.Game },
+            new LibraryInfo() { order = 1101, name = "Agen",       tags = LibraryTag.Game | LibraryTag.Shared | LibraryTag.Compile },
+            new LibraryInfo() { order = 1102, name = "Game",       tags = LibraryTag.Game | LibraryTag.Compile },
+            new LibraryInfo() { order = 1103, name = "GameHotfix", tags = LibraryTag.Game | LibraryTag.Hotfix | LibraryTag.Compile },
+            new LibraryInfo() { order = 1102, name = "World",      tags = LibraryTag.Game | LibraryTag.Compile },
+            new LibraryInfo() { order = 1103, name = "WorldHotfix", tags = LibraryTag.Game | LibraryTag.Hotfix | LibraryTag.Compile },
         };
 
         /// <summary>
@@ -109,12 +107,22 @@ namespace CoreEngine
         /// <returns>返回全部程序集的名称列表</returns>
         public static IList<string> GetAllAssemblyNames(LibraryInfoLicenseApprovedCallback callback = null)
         {
-            List<string> assemblyNames = new ();
+            IList<string> assemblyNames = new List<string>();
 
             // 核心库
             for (int n = 0; n < _coreLibraries.Count; ++n)
             {
                 LibraryInfo info = _coreLibraries[n];
+                if (null == callback || false == callback(info))
+                    continue;
+
+                assemblyNames.Add(info.name);
+            }
+
+            // 模块库
+            for (int n = 0; n < _moduleLibraries.Count; ++n)
+            {
+                LibraryInfo info = _moduleLibraries[n];
                 if (null == callback || false == callback(info))
                     continue;
 
@@ -135,17 +143,27 @@ namespace CoreEngine
         }
 
         /// <summary>
-        /// 获取当前系统注册的全部可重载程序集名称<br/>
+        /// 获取当前系统注册的全部可加工程序集名称<br/>
         /// 若指定是否开启检测回调，若开启则将根据检测结果过滤程序库的名称列表
         /// </summary>
         /// <param name="callback">过滤回调</param>
-        /// <returns>返回全部可重载程序集的名称列表</returns>
-        public static IList<string> GetAllReloadableAssemblyNames(LibraryInfoLicenseApprovedCallback callback = null)
+        /// <returns>返回全部可加工程序集的名称列表</returns>
+        public static IList<string> GetAllPlayableAssemblyNames(LibraryInfoLicenseApprovedCallback callback = null)
         {
-            List<string> assemblyNames = new();
+            IList<string> assemblyNames = new List<string>();
 
             // 跳过所有核心库
-            // 因为核心库不可进行重载操作
+            // 因为核心库不可进行加工操作
+
+            // 模块库
+            for (int n = 0; n < _moduleLibraries.Count; ++n)
+            {
+                LibraryInfo info = _moduleLibraries[n];
+                if (null == callback || false == callback(info))
+                    continue;
+
+                assemblyNames.Add(info.name);
+            }
 
             // 业务库
             for (int n = 0; n < _gameLibraries.Count; ++n)
@@ -154,8 +172,7 @@ namespace CoreEngine
                 if (null == callback || false == callback(info))
                     continue;
 
-                if (info.IsContainsTag(LibraryTag.Hotfix))
-                    assemblyNames.Add(info.name);
+                assemblyNames.Add(info.name);
             }
 
             return assemblyNames;
@@ -168,35 +185,6 @@ namespace CoreEngine
         public static IList<string> GetAllGenericAotNames()
         {
             return _aotLibraries;
-        }
-
-        /// <summary>
-        /// 通过程序集名称查找对应源码路径
-        /// </summary>
-        /// <param name="assemblyName">程序集名称</param>
-        /// <returns>返回源码路径，若查找失败则返回null</returns>
-        /// <exception cref="System.IO.FileNotFoundException"></exception>
-        public static string GetSourcePathByAssemblyName(string assemblyName)
-        {
-            LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
-            if (null == info)
-            {
-                throw new System.IO.FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
-            }
-
-            if (string.IsNullOrEmpty(info.source_path))
-            {
-                // 核心库不提供源码路径
-                if (_coreLibraries.Contains(info))
-                {
-                    return null;
-                }
-
-                string source_dir = SystemPath.GetPath(ResourcePathType.SourceCodePath);
-                return System.IO.Path.Combine(source_dir, assemblyName);
-            }
-
-            return info.source_path;
         }
 
         /// <summary>
@@ -243,6 +231,15 @@ namespace CoreEngine
             for (int n = 0; n < _coreLibraries.Count; ++n)
             {
                 LibraryInfo info = _coreLibraries[n];
+                if (assemblyName == info.name)
+                {
+                    return info;
+                }
+            }
+
+            for (int n = 0; n < _moduleLibraries.Count; ++n)
+            {
+                LibraryInfo info = _moduleLibraries[n];
                 if (assemblyName == info.name)
                 {
                     return info;

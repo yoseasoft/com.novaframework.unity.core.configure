@@ -41,11 +41,6 @@ namespace CoreEngine
         public string name { get; internal set; }
 
         /// <summary>
-        /// 源码路径
-        /// </summary>
-        public string source_path { get; internal set; }
-
-        /// <summary>
         /// 标签集合
         /// </summary>
         public LibraryTag tags { get; internal set; }
