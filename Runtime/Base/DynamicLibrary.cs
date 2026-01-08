@@ -33,11 +33,11 @@ namespace CoreEngine
     internal static class DynamicLibrary
     {
         /// <summary>
-        /// 程序库许可通过检测的回调句柄定义
+        /// 程序库条件过滤的回调句柄定义
         /// </summary>
         /// <param name="info">库信息</param>
-        /// <returns>程序库通过许可返回true，否则返回false</returns>
-        public delegate bool LibraryInfoLicenseApprovedCallback(LibraryInfo info);
+        /// <returns>程序库过滤成果返回true，否则返回false</returns>
+        public delegate bool LibraryInfoConditionalFilteringCallback(LibraryInfo info);
 
         /**
          * 核心库，程序启动必须装载，所以为默认配置
@@ -58,10 +58,10 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order =  1, name = NovaLibraryName, tags = LibraryTag.Core },
-            new LibraryInfo() { order =  2, name = NovaEngineName,  tags = LibraryTag.Core },
-            new LibraryInfo() { order =  3, name = NovaBasicName,   tags = LibraryTag.Core },
-            new LibraryInfo() { order =  4, name = NovaImportName,  tags = LibraryTag.Core },
+            new LibraryInfo() { order = 1, name = NovaLibraryName, tags = LibraryTag.Core },
+            new LibraryInfo() { order = 2, name = NovaEngineName,  tags = LibraryTag.Core },
+            new LibraryInfo() { order = 3, name = NovaBasicName,   tags = LibraryTag.Core },
+            new LibraryInfo() { order = 4, name = NovaImportName,  tags = LibraryTag.Core },
         };
 
         /// <summary>
@@ -69,11 +69,11 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _moduleLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 111, name = "Game.Module.Protocol.Protobuf", tags = LibraryTag.Module },
+            new LibraryInfo() { order = 111, name = "Game.Module.Protocol.Protobuf",  tags = LibraryTag.Module },
             new LibraryInfo() { order = 112, name = "Game.Module.Protocol.Streambuf", tags = LibraryTag.Module },
-            new LibraryInfo() { order = 121, name = "Game.Module.View.Fairygui", tags = LibraryTag.Module | LibraryTag.Compile },
-            new LibraryInfo() { order = 122, name = "Game.Module.View.Ugui", tags = LibraryTag.Module },
-            new LibraryInfo() { order = 211, name = "Game.Sample", tags = LibraryTag.Module | LibraryTag.Compile | LibraryTag.Tutorial },
+            new LibraryInfo() { order = 121, name = "Game.Module.View.Fairygui",      tags = LibraryTag.Module | LibraryTag.Compile },
+            new LibraryInfo() { order = 122, name = "Game.Module.View.Ugui",          tags = LibraryTag.Module },
+            new LibraryInfo() { order = 211, name = "Game.Sample",                    tags = LibraryTag.Module | LibraryTag.Compile | LibraryTag.Tutorial },
         };
 
         /// <summary>
@@ -81,10 +81,10 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 1101, name = "Agen",       tags = LibraryTag.Game | LibraryTag.Shared | LibraryTag.Compile },
-            new LibraryInfo() { order = 1102, name = "Game",       tags = LibraryTag.Game | LibraryTag.Compile },
-            new LibraryInfo() { order = 1103, name = "GameHotfix", tags = LibraryTag.Game | LibraryTag.Hotfix | LibraryTag.Compile },
-            new LibraryInfo() { order = 1102, name = "World",      tags = LibraryTag.Game | LibraryTag.Compile },
+            new LibraryInfo() { order = 1101, name = "Agen",        tags = LibraryTag.Game | LibraryTag.Shared | LibraryTag.Compile },
+            new LibraryInfo() { order = 1102, name = "Game",        tags = LibraryTag.Game | LibraryTag.Compile },
+            new LibraryInfo() { order = 1103, name = "GameHotfix",  tags = LibraryTag.Game | LibraryTag.Hotfix | LibraryTag.Compile },
+            new LibraryInfo() { order = 1102, name = "World",       tags = LibraryTag.Game | LibraryTag.Compile },
             new LibraryInfo() { order = 1103, name = "WorldHotfix", tags = LibraryTag.Game | LibraryTag.Hotfix | LibraryTag.Compile },
         };
 
@@ -105,7 +105,7 @@ namespace CoreEngine
         /// </summary>
         /// <param name="callback">过滤回调</param>
         /// <returns>返回全部程序集的名称列表</returns>
-        public static IList<string> GetAllAssemblyNames(LibraryInfoLicenseApprovedCallback callback = null)
+        public static IList<string> GetAllAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
         {
             IList<string> assemblyNames = new List<string>();
 
@@ -148,7 +148,7 @@ namespace CoreEngine
         /// </summary>
         /// <param name="callback">过滤回调</param>
         /// <returns>返回全部可加工程序集的名称列表</returns>
-        public static IList<string> GetAllPlayableAssemblyNames(LibraryInfoLicenseApprovedCallback callback = null)
+        public static IList<string> GetAllPlayableAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
         {
             IList<string> assemblyNames = new List<string>();
 
