@@ -28,7 +28,7 @@ namespace CoreEngine
     /// <summary>
     /// 系统资源路径类型定义
     /// </summary>
-    internal enum ResourcePathType : int
+    public enum ResourcePathType : int
     {
         None = 0,
         OriginalResourcePath,
@@ -39,8 +39,5 @@ namespace CoreEngine
         ContextPath,
         ConfigPath,
         ProtocolPath,
-        UguiPath,
-        UiToolkitPath,
-        FairyguiPath,
     }
 }

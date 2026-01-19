@@ -41,9 +41,7 @@ namespace CoreEngine
             {"LINK_LIBRARY_PATH", "Assets/_Resources/Code"},
             {"CONTEXT_PATH", "Assets/_Resources/Context"},
             {"CONFIG_PATH", "Assets/_Resources/Config"},
-            {"UGUI_PATH", "Assets/_Resources/UGui/"},
-            {"UITOOLKIT_PATH", "Assets/_Resources/Gui/"},
-            {"FAIRYGUI_PATH", "Assets/_Resources/Gui/"},
+            {"GUI_PATH", "Assets/_Resources/Gui/"},
         };
 
         /// <summary>
