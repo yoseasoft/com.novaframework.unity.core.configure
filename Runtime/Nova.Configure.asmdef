@@ -1,3 +1,16 @@
 {
-	"name": "Nova.Configure"
+    "name": "Nova.Configure",
+    "rootNamespace": "",
+    "references": [
+        "Nova.Common"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

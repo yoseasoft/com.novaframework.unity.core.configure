@@ -43,7 +43,7 @@ namespace CoreEngine
         {
             if (_variables.ContainsKey(key))
             {
-                UnityEngine.Debug.LogWarningFormat("当前系统环境变量中已存在给定的键“{0}”，重复设置将覆盖旧值！", key);
+                Logger.Warn("当前系统环境变量中已存在给定的键“{0}”，重复设置将覆盖旧值！", key);
                 _variables.Remove(key);
             }
 
