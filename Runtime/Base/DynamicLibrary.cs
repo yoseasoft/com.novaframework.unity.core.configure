@@ -23,7 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CoreEngine
 {
@@ -58,46 +60,26 @@ namespace CoreEngine
         /// </summary>
         static readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
         {
-            new LibraryInfo() { order = 1, name = NovaLibraryName, tags = LibraryTag.Core },
-            new LibraryInfo() { order = 2, name = NovaEngineName,  tags = LibraryTag.Core },
-            new LibraryInfo() { order = 3, name = NovaBasicName,   tags = LibraryTag.Core },
-            new LibraryInfo() { order = 4, name = NovaImportName,  tags = LibraryTag.Core },
+            new () { order = 1, name = NovaLibraryName, tags = LibraryTag.Core },
+            new () { order = 2, name = NovaEngineName,  tags = LibraryTag.Core },
+            new () { order = 3, name = NovaBasicName,   tags = LibraryTag.Core },
+            new () { order = 4, name = NovaImportName,  tags = LibraryTag.Core },
         };
 
         /// <summary>
         /// 模块库列表
         /// </summary>
-        static readonly IList<LibraryInfo> _moduleLibraries = new List<LibraryInfo>()
-        {
-            new LibraryInfo() { order = 111, name = "Game.Module.Protocol.Protobuf",  tags = LibraryTag.Module },
-            new LibraryInfo() { order = 112, name = "Game.Module.Protocol.Streambuf", tags = LibraryTag.Module },
-            new LibraryInfo() { order = 121, name = "Game.Module.View.Fairygui",      tags = LibraryTag.Module | LibraryTag.Compile },
-            new LibraryInfo() { order = 122, name = "Game.Module.View.Ugui",          tags = LibraryTag.Module },
-            new LibraryInfo() { order = 211, name = "Game.Sample",                    tags = LibraryTag.Module | LibraryTag.Compile | LibraryTag.Tutorial },
-        };
+        static readonly IList<LibraryInfo> _moduleLibraries = new List<LibraryInfo>();
 
         /// <summary>
         /// 业务库列表
         /// </summary>
-        static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>()
-        {
-            new LibraryInfo() { order = 1101, name = "Agen",        tags = LibraryTag.Game | LibraryTag.Shared | LibraryTag.Compile },
-            new LibraryInfo() { order = 1102, name = "Game",        tags = LibraryTag.Game | LibraryTag.Compile },
-            new LibraryInfo() { order = 1103, name = "GameHotfix",  tags = LibraryTag.Game | LibraryTag.Hotfix | LibraryTag.Compile },
-            new LibraryInfo() { order = 1102, name = "World",       tags = LibraryTag.Game | LibraryTag.Compile },
-            new LibraryInfo() { order = 1103, name = "WorldHotfix", tags = LibraryTag.Game | LibraryTag.Hotfix | LibraryTag.Compile },
-        };
+        static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>();
 
         /// <summary>
         /// AOT元数据列表
         /// </summary>
-        static readonly IList<string> _aotLibraries = new List<string>()
-        {
-            "System.Core.dll",
-            "System.dll",
-            "mscorlib.dll",
-            "UnityEngine.CoreModule.dll",
-        };
+        static readonly IList<string> _aotLibraries = new List<string>();
 
         /// <summary>
         /// 获取当前系统注册的全部程序集名称<br/>
@@ -197,11 +179,11 @@ namespace CoreEngine
             LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
             if (null == info)
             {
-                throw new System.IO.FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
+                throw new FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
             }
 
             string library_dir = SystemPath.GetPath(ResourcePathType.LinkLibraryPath);
-            return System.IO.Path.Combine(library_dir, $"{assemblyName}.dll");
+            return Path.Combine(library_dir, $"{assemblyName}.dll");
         }
 
         /// <summary>
@@ -214,11 +196,11 @@ namespace CoreEngine
             LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
             if (null == info)
             {
-                throw new System.IO.FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
+                throw new FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
             }
 
             string library_dir = SystemPath.GetPath(ResourcePathType.LinkLibraryPath);
-            return System.IO.Path.Combine(library_dir, $"{assemblyName}.dll.bytes");
+            return Path.Combine(library_dir, $"{assemblyName}.dll.bytes");
         }
 
         /// <summary>
@@ -257,5 +239,86 @@ namespace CoreEngine
 
             return null;
         }
+
+        #region 动态程序库注册绑定相关接口函数
+
+        /// <summary>
+        /// 注册新的程序库信息
+        /// </summary>
+        /// <param name="order">程序库标签序号</param>
+        /// <param name="name">程序库标签名称</param>
+        /// <param name="tags">程序库标签</param>
+        public static void RegisterLibraryInfo(int order, string name, IList<string> tags)
+        {
+            LibraryTag tag = LibraryTag.Unknown;
+
+            for (int n = 0; null != tags && n < tags.Count; ++n)
+            {
+                tag |= (LibraryTag) Enum.Parse(typeof(LibraryTag), tags[n]);
+            }
+
+            LibraryTag tagForPackType = (LibraryTag) Enum.ToObject(typeof(LibraryTag), (int) tag & 0x0f);
+            IList<LibraryInfo> container;
+
+            switch (tagForPackType)
+            {
+                case LibraryTag.Core:
+                    throw new ArgumentException("Cannot register core library.");
+                case LibraryTag.Module:
+                    container = _moduleLibraries;
+                    break;
+                case LibraryTag.Game:
+                    container = _gameLibraries;
+                    break;
+                default:
+                    throw new ArgumentException("Invalid library tag.");
+            }
+
+            // 重复注册检查
+            for (int n = 0; n < container.Count; ++n)
+            {
+                LibraryInfo tmp = container[n];
+                if (tmp.order == order || tmp.name == name)
+                {
+                    throw new ArgumentException("Library name is already registered.");
+                }
+            }
+
+            LibraryInfo info = new LibraryInfo() { order = order, name = name, tags = tag };
+            container.Add(info);
+        }
+
+        /// <summary>
+        /// 注销所有的程序库信息
+        /// </summary>
+        public static void UnregisterAllLibraryInfos()
+        {
+            _moduleLibraries.Clear();
+            _gameLibraries.Clear();
+        }
+
+        /// <summary>
+        /// 注册新的预编译库名称
+        /// </summary>
+        /// <param name="name">预编译库名称</param>
+        public static void RegisterAotLibraryName(string name)
+        {
+            if (_aotLibraries.Contains(name))
+            {
+                throw new ArgumentException("AOT library name is already registered.");
+            }
+
+            _aotLibraries.Add(name);
+        }
+
+        /// <summary>
+        /// 注销所有的预编译库名称
+        /// </summary>
+        public static void UnregisterAllAotLibraryNames()
+        {
+            _aotLibraries.Clear();
+        }
+
+        #endregion
     }
 }

@@ -32,17 +32,7 @@ namespace CoreEngine
     /// </summary>
     internal static class SystemVariables
     {
-        static readonly IDictionary<string, string> _variables = new Dictionary<string, string>()
-        {
-            {"ORIGINAL_RESOURCE_PATH", "Assets/_Resources"},
-            {"SOURCE_CODE_PATH", "Assets/Sources"},
-            {"SCRIPT_FILE_PATH", "Assets/LuaScripts"},
-            {"AOT_LIBRARY_PATH", "Assets/_Resources/Aot"},
-            {"LINK_LIBRARY_PATH", "Assets/_Resources/Code"},
-            {"CONTEXT_PATH", "Assets/_Resources/Context"},
-            {"CONFIG_PATH", "Assets/_Resources/Config"},
-            {"GUI_PATH", "Assets/_Resources/Gui/"},
-        };
+        static readonly IDictionary<string, string> _variables = new Dictionary<string, string>();
 
         /// <summary>
         /// 设置系统变量
@@ -58,6 +48,18 @@ namespace CoreEngine
             }
 
             _variables.Add(key, value);
+        }
+
+        /// <summary>
+        /// 设置系统变量
+        /// </summary>
+        /// <param name="vars">字典对象</param>
+        public static void SetValue(IReadOnlyDictionary<string, string> vars)
+        {
+            foreach (KeyValuePair<string, string> pair in vars)
+            {
+                SetValue(pair.Key, pair.Value);
+            }
         }
 
         /// <summary>

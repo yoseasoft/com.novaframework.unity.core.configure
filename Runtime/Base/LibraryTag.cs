@@ -54,13 +54,13 @@ namespace CoreEngine
         /// </summary>
         Shared = 0x0010,
         /// <summary>
-        /// 重载模组（支持热重载）
-        /// </summary>
-        Hotfix = 0x0020,
-        /// <summary>
         /// 编译模组
         /// </summary>
-        Compile = 0x0040,
+        Compile = 0x0020,
+        /// <summary>
+        /// 重载模组（支持热重载）
+        /// </summary>
+        Hotfix = 0x0040,
 
         /// <summary>
         /// 演示库
