@@ -1,6 +1,4 @@
 /// -------------------------------------------------------------------------------
-/// CoreEngine Framework
-///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
@@ -28,7 +26,7 @@ using System.IO;
 using System.Text;
 using System.Runtime.CompilerServices;
 
-namespace CoreEngine
+namespace NovaFramework
 {
     /// <summary>
     /// 系统路径管理类，用于对整个项目内的路径访问提供统一的接口函数

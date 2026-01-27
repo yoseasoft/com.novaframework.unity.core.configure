@@ -1,6 +1,4 @@
 /// -------------------------------------------------------------------------------
-/// CoreEngine Framework
-///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
@@ -27,7 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace CoreEngine
+namespace NovaFramework
 {
     /// <summary>
     /// 动态库管理类，负责管理当前运行上下文中涉及到的全部需要动态链接的程序库

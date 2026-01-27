@@ -1,6 +1,4 @@
 /// -------------------------------------------------------------------------------
-/// CoreEngine Framework
-///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
@@ -23,7 +21,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace CoreEngine
+namespace NovaFramework
 {
     /// <summary>
     /// 系统资源路径类型定义

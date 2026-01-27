@@ -1,6 +1,4 @@
 /// -------------------------------------------------------------------------------
-/// CoreEngine Framework
-///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
@@ -25,7 +23,7 @@
 
 using System.Collections.Generic;
 
-namespace CoreEngine
+namespace NovaFramework
 {
     /// <summary>
     /// 系统变量定义类，应用于整个项目的环境变量配置管理

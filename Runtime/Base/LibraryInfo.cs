@@ -1,6 +1,4 @@
 /// -------------------------------------------------------------------------------
-/// CoreEngine Framework
-///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
@@ -23,7 +21,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace CoreEngine
+namespace NovaFramework
 {
     /// <summary>
     /// 框架加载的程序库的信息对象类，用于描述程序库的基础属性
