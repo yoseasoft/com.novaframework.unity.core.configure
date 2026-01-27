@@ -43,10 +43,10 @@ namespace NovaFramework
          * 核心库，程序启动必须装载，所以为默认配置
          */
 
-        const string NovaLibraryName = @"Nova.Library";
-        const string NovaEngineName  = @"Nova.Engine";
-        const string NovaBasicName   = @"Nova.Basic";
-        const string NovaImportName  = @"Nova.Import";
+        const string NovaLibraryName = @"NovaEngine.Library";
+        const string NovaKernelName  = @"NovaEngine.Kernel";
+        const string NovaBasicName   = @"NovaEngine.Basic";
+        const string NovaImportName  = @"NovaEngine.Import";
 
         /// <summary>
         /// 外部控制入口，固定设置
@@ -59,7 +59,7 @@ namespace NovaFramework
         static readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
         {
             new () { order = 1, name = NovaLibraryName, tags = LibraryTag.Core },
-            new () { order = 2, name = NovaEngineName,  tags = LibraryTag.Core },
+            new () { order = 2, name = NovaKernelName,  tags = LibraryTag.Core },
             new () { order = 3, name = NovaBasicName,   tags = LibraryTag.Core },
             new () { order = 4, name = NovaImportName,  tags = LibraryTag.Core },
         };
