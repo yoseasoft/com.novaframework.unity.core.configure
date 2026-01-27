@@ -180,7 +180,7 @@ namespace NovaFramework
                 throw new FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
             }
 
-            string library_dir = SystemPath.GetPath(ResourcePathType.LinkLibraryPath);
+            string library_dir = EnvironmentPath.GetPath(ResourcePathType.LinkLibraryPath);
             return Path.Combine(library_dir, $"{assemblyName}.dll");
         }
 
@@ -197,7 +197,7 @@ namespace NovaFramework
                 throw new FileNotFoundException($"unknown assembly name \"{assemblyName}\".");
             }
 
-            string library_dir = SystemPath.GetPath(ResourcePathType.LinkLibraryPath);
+            string library_dir = EnvironmentPath.GetPath(ResourcePathType.LinkLibraryPath);
             return Path.Combine(library_dir, $"{assemblyName}.dll.bytes");
         }
 

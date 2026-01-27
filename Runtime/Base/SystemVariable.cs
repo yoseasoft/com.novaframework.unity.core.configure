@@ -26,14 +26,14 @@ using System.Collections.Generic;
 namespace NovaFramework
 {
     /// <summary>
-    /// 系统变量定义类，应用于整个项目的环境变量配置管理
+    /// 环境变量定义类，应用于整个项目的本地变量配置管理
     /// </summary>
-    internal static class SystemVariables
+    internal static class EnvironmentVariables
     {
         static readonly IDictionary<string, string> _variables = new Dictionary<string, string>();
 
         /// <summary>
-        /// 设置系统变量
+        /// 设置环境变量
         /// </summary>
         /// <param name="key">变量键</param>
         /// <param name="value">变量值</param>
@@ -49,7 +49,7 @@ namespace NovaFramework
         }
 
         /// <summary>
-        /// 设置系统变量
+        /// 设置环境变量
         /// </summary>
         /// <param name="vars">字典对象</param>
         public static void SetValue(IReadOnlyDictionary<string, string> vars)
@@ -61,10 +61,10 @@ namespace NovaFramework
         }
 
         /// <summary>
-        /// 获取系统变量
+        /// 获取环境变量
         /// </summary>
         /// <param name="key">变量键</param>
-        /// <returns>返回系统变量的值</returns>
+        /// <returns>返回环境变量的值</returns>
         public static string GetValue(string key)
         {
             if (_variables.TryGetValue(key, out string value))

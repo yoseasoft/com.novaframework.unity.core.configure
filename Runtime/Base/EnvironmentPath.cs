@@ -29,9 +29,9 @@ using System.Runtime.CompilerServices;
 namespace NovaFramework
 {
     /// <summary>
-    /// 系统路径管理类，用于对整个项目内的路径访问提供统一的接口函数
+    /// 系统环境路径管理类，用于对整个项目内的路径访问提供统一的接口函数
     /// </summary>
-    internal static class SystemPath
+    internal static class EnvironmentPath
     {
         static readonly IDictionary<ResourcePathType, string> _cachePaths = new Dictionary<ResourcePathType, string>();
 
@@ -64,7 +64,7 @@ namespace NovaFramework
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetPath(string key)
         {
-            return SystemVariables.GetValue(key);
+            return EnvironmentVariables.GetValue(key);
         }
 
         /// <summary>
