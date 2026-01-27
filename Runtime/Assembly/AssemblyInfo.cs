@@ -24,11 +24,11 @@
 using System.Runtime.CompilerServices;
 
 // 外部友元
-[assembly: InternalsVisibleTo("Nova.Boot")]
+[assembly: InternalsVisibleTo("NovaFramework.Boot")]
 [assembly: InternalsVisibleTo("Nova.Engine")]
 [assembly: InternalsVisibleTo("Nova.Basic")]
 [assembly: InternalsVisibleTo("Nova.Import")]
 
-[assembly: InternalsVisibleTo("Nova.Configure.Editor")]
-[assembly: InternalsVisibleTo("Nova.Boot.Editor")]
+[assembly: InternalsVisibleTo("NovaEditor.Configure")]
+[assembly: InternalsVisibleTo("NovaEditor.Boot")]
 [assembly: InternalsVisibleTo("Nova.Editor")]

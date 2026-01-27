@@ -1,8 +1,8 @@
 {
-    "name": "Nova.Configure",
+    "name": "NovaFramework.Configure",
     "rootNamespace": "",
     "references": [
-        "Nova.Common"
+        "NovaFramework.Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
