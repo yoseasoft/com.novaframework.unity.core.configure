@@ -85,9 +85,9 @@ namespace NovaFramework
         /// </summary>
         /// <param name="callback">过滤回调</param>
         /// <returns>返回全部程序集的名称列表</returns>
-        public static IList<string> GetAllAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
+        public static IReadOnlyList<string> GetAllAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
         {
-            IList<string> assemblyNames = new List<string>();
+            List<string> assemblyNames = new ();
 
             // 核心库
             for (int n = 0; n < _coreLibraries.Count; ++n)
@@ -128,9 +128,9 @@ namespace NovaFramework
         /// </summary>
         /// <param name="callback">过滤回调</param>
         /// <returns>返回全部可加工程序集的名称列表</returns>
-        public static IList<string> GetAllPlayableAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
+        public static IReadOnlyList<string> GetAllPlayableAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
         {
-            IList<string> assemblyNames = new List<string>();
+            List<string> assemblyNames = new ();
 
             // 跳过所有核心库
             // 因为核心库不可进行加工操作
@@ -162,9 +162,9 @@ namespace NovaFramework
         /// 获取当前系统注册的全部元数据链接库名称
         /// </summary>
         /// <returns>返回全部元数据链接库的名称列表</returns>
-        public static IList<string> GetAllGenericAotNames()
+        public static IReadOnlyList<string> GetAllGenericAotNames()
         {
-            return _aotLibraries;
+            return (List<string>) _aotLibraries;
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace NovaFramework
                 }
             }
 
-            LibraryInfo info = new LibraryInfo() { order = order, name = name, tags = tag };
+            LibraryInfo info = new () { order = order, name = name, tags = tag };
             container.Add(info);
         }
 
