@@ -1,0 +1,20 @@
+{
+    "name": "NovaEditor.Configure",
+    "rootNamespace": "",
+    "references": [
+        "NovaFramework.Common",
+        "NovaFramework.Configure",
+        "NovaEditor.Common"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

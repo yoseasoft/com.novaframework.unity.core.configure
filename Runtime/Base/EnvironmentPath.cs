@@ -21,10 +21,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace NovaFramework
 {
@@ -64,7 +65,7 @@ namespace NovaFramework
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetPath(string key)
         {
-            return EnvironmentVariables.GetValue(key);
+            return EnvironmentVariables.Instance.GetValue(key);
         }
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace NovaFramework
                 // 每个大写字符判定为一个新的单词的开始
                 // 从这里截取出上一个完整的单词
                 // 单词之间用‘_’进行连接
-                if (System.Char.IsUpper(memberName[pos]))
+                if (Char.IsUpper(memberName[pos]))
                 {
                     sub_name = memberName.Substring(start, pos - start);
                     if (sb.Length > 0) sb.Append('_');

@@ -25,12 +25,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace NovaFramework
 {
     /// <summary>
     /// 动态库管理类，负责管理当前运行上下文中涉及到的全部需要动态链接的程序库
     /// </summary>
-    internal static class DynamicLibrary
+    internal sealed class DynamicLibrary : Singleton<DynamicLibrary>
     {
         /// <summary>
         /// 程序库条件过滤的回调句柄定义
@@ -43,41 +47,66 @@ namespace NovaFramework
          * 核心库，程序启动必须装载，所以为默认配置
          */
 
-        const string NovaLibraryName = @"NovaEngine.Library";
-        const string NovaKernelName  = @"NovaEngine.Kernel";
-        const string NovaBasicName   = @"NovaEngine.Basic";
-        const string NovaImportName  = @"NovaEngine.Import";
+        const string NovaEngineLibraryName = @"NovaEngine.Library";
+        const string NovaEngineKernelName  = @"NovaEngine.Kernel";
+        const string NovaEngineBasicName   = @"NovaEngine.Basic";
+        const string NovaEngineImportName  = @"NovaEngine.Import";
 
         /// <summary>
         /// 外部控制入口，固定设置
         /// </summary>
-        public const string ExternalControlEntranceName = NovaBasicName;
+        public const string ExternalControlEntranceName = NovaEngineBasicName;
 
         /// <summary>
         /// 核心库列表
         /// </summary>
-        static readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
+        readonly IList<LibraryInfo> _coreLibraries = new List<LibraryInfo>()
         {
-            new () { order = 1, name = NovaLibraryName, tags = LibraryTag.Core },
-            new () { order = 2, name = NovaKernelName,  tags = LibraryTag.Core },
-            new () { order = 3, name = NovaBasicName,   tags = LibraryTag.Core },
-            new () { order = 4, name = NovaImportName,  tags = LibraryTag.Core },
+            new () { order = 1, name = NovaEngineLibraryName, tags = LibraryTag.Core },
+            new () { order = 2, name = NovaEngineKernelName,  tags = LibraryTag.Core },
+            new () { order = 3, name = NovaEngineBasicName,   tags = LibraryTag.Core },
+            new () { order = 4, name = NovaEngineImportName,  tags = LibraryTag.Core },
         };
 
         /// <summary>
         /// 模块库列表
         /// </summary>
-        static readonly IList<LibraryInfo> _moduleLibraries = new List<LibraryInfo>();
+        readonly IList<LibraryInfo> _moduleLibraries = new List<LibraryInfo>();
 
         /// <summary>
         /// 业务库列表
         /// </summary>
-        static readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>();
+        readonly IList<LibraryInfo> _gameLibraries = new List<LibraryInfo>();
 
         /// <summary>
         /// AOT元数据列表
         /// </summary>
-        static readonly IList<string> _aotLibraries = new List<string>();
+        readonly IList<string> _aotLibraries = new List<string>();
+
+        /// <summary>
+        /// 动态库初始化回调接口
+        /// </summary>
+        protected override sealed void OnInitialize()
+        {
+#if UNITY_EDITOR
+            // 编辑器模式，且未运行状态
+            if (!EditorApplication.isPlaying)
+            {
+                Serialization.EnvironmentConfigures environmentConfigures = Serialization.EnvironmentConfigures.Instance;
+                AutoloadConfigurationLibraryObjects(environmentConfigures.modules);
+                AutoloadConfigurationAotLibraryNames(environmentConfigures.aots);
+            }
+#endif
+        }
+
+        /// <summary>
+        /// 动态库清理回调接口
+        /// </summary>
+        protected override sealed void OnCleanup()
+        {
+            UnregisterAllLibraryInfos();
+            UnregisterAllAotLibraryNames();
+        }
 
         /// <summary>
         /// 获取当前系统注册的全部程序集名称<br/>
@@ -85,7 +114,7 @@ namespace NovaFramework
         /// </summary>
         /// <param name="callback">过滤回调</param>
         /// <returns>返回全部程序集的名称列表</returns>
-        public static IReadOnlyList<string> GetAllAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
+        public IReadOnlyList<string> GetAllAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
         {
             List<string> assemblyNames = new ();
 
@@ -128,7 +157,7 @@ namespace NovaFramework
         /// </summary>
         /// <param name="callback">过滤回调</param>
         /// <returns>返回全部可加工程序集的名称列表</returns>
-        public static IReadOnlyList<string> GetAllPlayableAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
+        public IReadOnlyList<string> GetAllPlayableAssemblyNames(LibraryInfoConditionalFilteringCallback callback = null)
         {
             List<string> assemblyNames = new ();
 
@@ -162,7 +191,7 @@ namespace NovaFramework
         /// 获取当前系统注册的全部元数据链接库名称
         /// </summary>
         /// <returns>返回全部元数据链接库的名称列表</returns>
-        public static IReadOnlyList<string> GetAllGenericAotNames()
+        public IReadOnlyList<string> GetAllGenericAotNames()
         {
             return (List<string>) _aotLibraries;
         }
@@ -172,7 +201,7 @@ namespace NovaFramework
         /// </summary>
         /// <param name="assemblyName">程序集名称</param>
         /// <returns>返回库文件路径</returns>
-        public static string GetLibraryFilePathByAssemblyName(string assemblyName)
+        public string GetLibraryFilePathByAssemblyName(string assemblyName)
         {
             LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
             if (null == info)
@@ -189,7 +218,7 @@ namespace NovaFramework
         /// </summary>
         /// <param name="assemblyName">程序集名称</param>
         /// <returns>返回二进制库文件路径</returns>
-        public static string GetBinaryLibraryFilePathByAssemblyName(string assemblyName)
+        public string GetBinaryLibraryFilePathByAssemblyName(string assemblyName)
         {
             LibraryInfo info = GetLibraryInfoByAssemblyName(assemblyName);
             if (null == info)
@@ -206,7 +235,7 @@ namespace NovaFramework
         /// </summary>
         /// <param name="assemblyName">程序集名称</param>
         /// <returns>返回程序库实例，若查找失败则返回null</returns>
-        public static LibraryInfo GetLibraryInfoByAssemblyName(string assemblyName)
+        public LibraryInfo GetLibraryInfoByAssemblyName(string assemblyName)
         {
             for (int n = 0; n < _coreLibraries.Count; ++n)
             {
@@ -241,12 +270,25 @@ namespace NovaFramework
         #region 动态程序库注册绑定相关接口函数
 
         /// <summary>
+        /// 自动加载配置的程序库信息
+        /// </summary>
+        /// <param name="libraryObjects">信息列表</param>
+        public void AutoloadConfigurationLibraryObjects(IReadOnlyList<Serialization.SerializedLibraryObject> libraryObjects)
+        {
+            for (int n = 0; null != libraryObjects && n < libraryObjects.Count; ++n)
+            {
+                Serialization.SerializedLibraryObject libraryObject = libraryObjects[n];
+                RegisterLibraryInfo(libraryObject.order, libraryObject.name, libraryObject.tags);
+            }
+        }
+
+        /// <summary>
         /// 注册新的程序库信息
         /// </summary>
         /// <param name="order">程序库标签序号</param>
         /// <param name="name">程序库标签名称</param>
         /// <param name="tags">程序库标签</param>
-        public static void RegisterLibraryInfo(int order, string name, IList<string> tags)
+        public void RegisterLibraryInfo(int order, string name, IList<string> tags)
         {
             LibraryTag tag = LibraryTag.Unknown;
 
@@ -289,17 +331,29 @@ namespace NovaFramework
         /// <summary>
         /// 注销所有的程序库信息
         /// </summary>
-        public static void UnregisterAllLibraryInfos()
+        public void UnregisterAllLibraryInfos()
         {
             _moduleLibraries.Clear();
             _gameLibraries.Clear();
         }
 
         /// <summary>
+        /// 自动加载配置的预编译库名称
+        /// </summary>
+        /// <param name="libraryNames">库名称列表</param>
+        public void AutoloadConfigurationAotLibraryNames(IReadOnlyList<string> libraryNames)
+        {
+            for (int n = 0; null != libraryNames && n < libraryNames.Count; ++n)
+            {
+                RegisterAotLibraryName(libraryNames[n]);
+            }
+        }
+
+        /// <summary>
         /// 注册新的预编译库名称
         /// </summary>
         /// <param name="name">预编译库名称</param>
-        public static void RegisterAotLibraryName(string name)
+        public void RegisterAotLibraryName(string name)
         {
             if (_aotLibraries.Contains(name))
             {
@@ -312,7 +366,7 @@ namespace NovaFramework
         /// <summary>
         /// 注销所有的预编译库名称
         /// </summary>
-        public static void UnregisterAllAotLibraryNames()
+        public void UnregisterAllAotLibraryNames()
         {
             _aotLibraries.Clear();
         }

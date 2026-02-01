@@ -2,7 +2,7 @@
   "name": "com.novaframework.unity.core.configure",
   "displayName": "NovaFramework.Configure",
   "description": "The configure module of core system for NovaFramework",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "unity": "2018.3",
   "unityRelease": "0f1",
   "license": "MIT",

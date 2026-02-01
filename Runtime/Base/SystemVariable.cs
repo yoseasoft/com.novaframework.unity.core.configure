@@ -23,21 +23,61 @@
 
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace NovaFramework
 {
     /// <summary>
     /// 环境变量定义类，应用于整个项目的本地变量配置管理
     /// </summary>
-    internal static class EnvironmentVariables
+    internal sealed class EnvironmentVariables : Singleton<EnvironmentVariables>
     {
-        static readonly IDictionary<string, string> _variables = new Dictionary<string, string>();
+        readonly IDictionary<string, string> _variables = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 动态库初始化回调接口
+        /// </summary>
+        protected override sealed void OnInitialize()
+        {
+#if UNITY_EDITOR
+            // 编辑器模式，且未运行状态
+            if (!EditorApplication.isPlaying)
+            {
+                Serialization.EnvironmentConfigures environmentConfigures = Serialization.EnvironmentConfigures.Instance;
+                AutoloadConfigurationVariableObjects(environmentConfigures.variables);
+            }
+#endif
+        }
+
+        /// <summary>
+        /// 动态库清理回调接口
+        /// </summary>
+        protected override sealed void OnCleanup()
+        {
+            _variables.Clear();
+        }
+
+        /// <summary>
+        /// 自动加载配置的变量信息
+        /// </summary>
+        /// <param name="variableObjects">信息列表</param>
+        public void AutoloadConfigurationVariableObjects(IReadOnlyList<Serialization.SerializedVariableObject> variableObjects)
+        {
+            for (int n = 0; null != variableObjects && n < variableObjects.Count; ++n)
+            {
+                Serialization.SerializedVariableObject variableObject = variableObjects[n];
+                SetValue(variableObject.key, variableObject.value);
+            }
+        }
 
         /// <summary>
         /// 设置环境变量
         /// </summary>
         /// <param name="key">变量键</param>
         /// <param name="value">变量值</param>
-        public static void SetValue(string key, string value)
+        public void SetValue(string key, string value)
         {
             if (_variables.ContainsKey(key))
             {
@@ -52,7 +92,7 @@ namespace NovaFramework
         /// 设置环境变量
         /// </summary>
         /// <param name="vars">字典对象</param>
-        public static void SetValue(IReadOnlyDictionary<string, string> vars)
+        public void SetValue(IReadOnlyDictionary<string, string> vars)
         {
             foreach (KeyValuePair<string, string> pair in vars)
             {
@@ -65,7 +105,7 @@ namespace NovaFramework
         /// </summary>
         /// <param name="key">变量键</param>
         /// <returns>返回环境变量的值</returns>
-        public static string GetValue(string key)
+        public string GetValue(string key)
         {
             if (_variables.TryGetValue(key, out string value))
                 return value;
