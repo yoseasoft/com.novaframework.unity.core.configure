@@ -32,7 +32,7 @@ namespace NovaFramework
     /// <summary>
     /// 系统环境路径管理类，用于对整个项目内的路径访问提供统一的接口函数
     /// </summary>
-    internal static class EnvironmentPath
+    static class EnvironmentPath
     {
         static readonly IDictionary<ResourcePathType, string> _cachePaths = new Dictionary<ResourcePathType, string>();
 
