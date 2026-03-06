@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using NovaFramework.Editor.Preference;
 using NovaFramework.Serialization;
@@ -18,13 +16,6 @@ namespace NovaFramework.Editor
             CreateEnvironmentConfigures();
             onComplete?.Invoke();
         }
-        
-        [MenuItem("Tools/自动安装aaaxxx")]
-        public static void Install2ddd()
-        {
-            // 创建 EnvironmentConfigures 配置文件到 Resources 目录
-            CreateEnvironmentConfigures();
-        }
 
         /// <summary>
         /// 创建 EnvironmentConfigures 配置文件到 Resources 目录
@@ -34,15 +25,7 @@ namespace NovaFramework.Editor
             string resourcesPath = Path.Combine(Application.dataPath, "Resources");
             string assetPath = Path.Combine(resourcesPath, "EnvironmentConfigures.asset");
             string unityAssetPath = "Assets/Resources/EnvironmentConfigures.asset";
-
-            // 如果已经存在，不需要重新创建
-            // EnvironmentConfigures existingAsset = Resources.Load<EnvironmentConfigures>(nameof(EnvironmentConfigures));
-            // if (existingAsset != null)
-            // {
-            //     Debug.Log($"[EnvironmentInstallationStep] EnvironmentConfigures 已存在，跳过创建");
-            //     return;
-            // }
-
+            
             // 确保 Resources 目录存在
             if (!Directory.Exists(resourcesPath))
             {
