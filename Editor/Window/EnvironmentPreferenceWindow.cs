@@ -18,16 +18,12 @@ namespace NovaFramework.Editor
             if (_configures == null)
             {
                 _configures = EnvironmentConfigures.Instance;
-            }
-
-            if (_configures == null)
-            {
-                EditorGUILayout.HelpBox("未找到 EnvironmentConfigures 资源文件，请在 Resources 目录下创建。", MessageType.Warning);
-                if (GUILayout.Button("创建 EnvironmentConfigures", GUILayout.Height(30)))
+                
+                if (_configures == null)
                 {
-                    CreateEnvironmentConfigures();
+                    EditorGUILayout.HelpBox("未找到 EnvironmentConfigures 资源文件，请在 Resources 目录下创建。", MessageType.Warning);
+                    return;
                 }
-                return;
             }
 
             if (_serializedObject == null || _serializedObject.targetObject != _configures)
@@ -51,14 +47,9 @@ namespace NovaFramework.Editor
 
             if (_serializedObject.hasModifiedProperties)
             {
-                EditorGUILayout.Space(10);
-                if (GUILayout.Button("保存", GUILayout.Height(30)))
-                {
-                    _serializedObject.ApplyModifiedProperties();
-                    EditorUtility.SetDirty(_configures);
-                    AssetDatabase.SaveAssets();
-                    Logger.Info("[EnvironmentPreference] 环境配置已保存");
-                }
+                _serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(_configures);
+                AssetDatabase.SaveAssets();
             }
         }
 
@@ -66,25 +57,10 @@ namespace NovaFramework.Editor
         {
             OnDraw();
         }
-
-        private void CreateEnvironmentConfigures()
-        {
-            string dir = "Assets/Resources";
-            if (!AssetDatabase.IsValidFolder(dir))
-            {
-                System.IO.Directory.CreateDirectory(System.IO.Path.Combine(Application.dataPath, "Resources"));
-                AssetDatabase.Refresh();
-            }
-
-            var asset = CreateInstance<EnvironmentConfigures>();
-            AssetDatabase.CreateAsset(asset, dir + "/EnvironmentConfigures.asset");
-            AssetDatabase.SaveAssets();
-            _configures = asset;
-            Logger.Info("[EnvironmentPreference] 已创建 EnvironmentConfigures 资源文件");
-        }
-
+        
         private void OnDestroy()
         {
+            _configures = null;
             _serializedObject = null;
         }
     }
