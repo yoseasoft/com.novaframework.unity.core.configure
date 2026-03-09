@@ -39,6 +39,10 @@ namespace NovaFramework.Editor
             AssetDatabase.CreateAsset(configures, unityAssetPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            
+            //生成默认路径
+            CreateDefaultDirectories(configures);
+            AssetDatabase.Refresh();
 
             Debug.Log($"[EnvironmentInstallationStep] EnvironmentConfigures 配置文件已创建: {unityAssetPath}");
         }
@@ -65,6 +69,19 @@ namespace NovaFramework.Editor
             configures.aots.Add("UnityEngine.CoreModule.dll");
         }
 
+        private static void CreateDefaultDirectories(EnvironmentConfigures configures)
+        {
+            foreach (var variable in configures.variables)
+            {
+                string fullPath = Path.Combine(Application.dataPath, "..", variable.value);
+                if (!Directory.Exists(fullPath))
+                {
+                    Directory.CreateDirectory(fullPath);
+                    Logger.Info($"[EnvironmentInstallationStep] 创建目录: {variable.value}");
+                }
+            }
+        }
+        
         public void Uninstall(Action onComplete = null)
         {
             onComplete?.Invoke();
