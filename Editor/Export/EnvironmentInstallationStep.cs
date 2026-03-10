@@ -11,25 +11,25 @@ namespace NovaFramework.Editor
     {
         const string _environmentConfiguresPath = "Assets/Resources/EnvironmentConfigures.asset";
         
-        public void Install(Action onComplete)
+        public void Install(Action onComplete, Action<string> addLog = null)
         {
             // 创建 EnvironmentConfigures 配置文件到 Resources 目录
-            CreateEnvironmentConfigures();
+            CreateEnvironmentConfigures(addLog);
             onComplete?.Invoke();
         }
 
         /// <summary>
         /// 创建 EnvironmentConfigures 配置文件到 Resources 目录
         /// </summary>
-        private static void CreateEnvironmentConfigures()
+        private static void CreateEnvironmentConfigures(Action<string> addLog = null)
         {
             string resourcesPath = Path.Combine(Application.dataPath, "Resources");
-            
+
             // 确保 Resources 目录存在
             if (!Directory.Exists(resourcesPath))
             {
                 Directory.CreateDirectory(resourcesPath);
-                Debug.Log($"[EnvironmentInstallationStep] 创建 Resources 目录: {resourcesPath}");
+                addLog?.Invoke($"已创建 Resources 目录");
             }
 
             // 创建 ScriptableObject 实例并填入默认值
@@ -40,12 +40,12 @@ namespace NovaFramework.Editor
             AssetDatabase.CreateAsset(configures, _environmentConfiguresPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
+
             //生成默认路径
-            CreateDefaultDirectories(configures);
+            CreateDefaultDirectories(configures, addLog);
             AssetDatabase.Refresh();
 
-            Debug.Log($"[EnvironmentInstallationStep] EnvironmentConfigures 配置文件已创建: {_environmentConfiguresPath}");
+            addLog?.Invoke($"已创建环境配置文件: {_environmentConfiguresPath}");
         }
         
         private static void ApplyDefaults(EnvironmentConfigures configures)
@@ -70,7 +70,7 @@ namespace NovaFramework.Editor
             configures.aots.Add("UnityEngine.CoreModule.dll");
         }
 
-        private static void CreateDefaultDirectories(EnvironmentConfigures configures)
+        private static void CreateDefaultDirectories(EnvironmentConfigures configures, Action<string> addLog = null)
         {
             foreach (var variable in configures.variables)
             {
@@ -78,7 +78,7 @@ namespace NovaFramework.Editor
                 if (!Directory.Exists(fullPath))
                 {
                     Directory.CreateDirectory(fullPath);
-                    Logger.Info($"[EnvironmentInstallationStep] 创建目录: {variable.value}");
+                    addLog?.Invoke($"已创建目录: {variable.value}");
                 }
             }
         }
