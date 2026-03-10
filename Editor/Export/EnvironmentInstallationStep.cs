@@ -9,6 +9,8 @@ namespace NovaFramework.Editor
 {
     public class EnvironmentInstallationStep : InstallationStep
     {
+        const string _environmentConfiguresPath = "Assets/Resources/EnvironmentConfigures.asset";
+        
         public void Install(Action onComplete)
         {
             // 创建 EnvironmentConfigures 配置文件到 Resources 目录
@@ -22,7 +24,6 @@ namespace NovaFramework.Editor
         private static void CreateEnvironmentConfigures()
         {
             string resourcesPath = Path.Combine(Application.dataPath, "Resources");
-            string unityAssetPath = "Assets/Resources/EnvironmentConfigures.asset";
             
             // 确保 Resources 目录存在
             if (!Directory.Exists(resourcesPath))
@@ -36,7 +37,7 @@ namespace NovaFramework.Editor
             ApplyDefaults(configures);
 
             // 创建资产文件
-            AssetDatabase.CreateAsset(configures, unityAssetPath);
+            AssetDatabase.CreateAsset(configures, _environmentConfiguresPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             
@@ -44,7 +45,7 @@ namespace NovaFramework.Editor
             CreateDefaultDirectories(configures);
             AssetDatabase.Refresh();
 
-            Debug.Log($"[EnvironmentInstallationStep] EnvironmentConfigures 配置文件已创建: {unityAssetPath}");
+            Debug.Log($"[EnvironmentInstallationStep] EnvironmentConfigures 配置文件已创建: {_environmentConfiguresPath}");
         }
         
         private static void ApplyDefaults(EnvironmentConfigures configures)
@@ -84,6 +85,7 @@ namespace NovaFramework.Editor
         
         public void Uninstall(Action onComplete = null)
         {
+            AssetDatabase.DeleteAsset(_environmentConfiguresPath);
             onComplete?.Invoke();
         }
     }
