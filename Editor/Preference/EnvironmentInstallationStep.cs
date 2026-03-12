@@ -11,17 +11,17 @@ namespace NovaFramework.Editor
     {
         const string _environmentConfiguresPath = "Assets/Resources/EnvironmentConfigures.asset";
         
-        public void Install(Action onMessage, Action onComplete, Action onError, Action<string> addLog)
+        public void Install(Action onComplete, Action onError)
         {
             // 创建 EnvironmentConfigures 配置文件到 Resources 目录
-            CreateEnvironmentConfigures(addLog);
+            CreateEnvironmentConfigures();
             onComplete?.Invoke();
         }
 
         /// <summary>
         /// 创建 EnvironmentConfigures 配置文件到 Resources 目录
         /// </summary>
-        private static void CreateEnvironmentConfigures(Action<string> addLog = null)
+        private static void CreateEnvironmentConfigures()
         {
             string resourcesPath = Path.Combine(Application.dataPath, "Resources");
 
@@ -29,7 +29,7 @@ namespace NovaFramework.Editor
             if (!Directory.Exists(resourcesPath))
             {
                 Directory.CreateDirectory(resourcesPath);
-                addLog?.Invoke($"已创建 Resources 目录");
+                Logger.Info($"已创建 Resources 目录");
             }
 
             // 创建 ScriptableObject 实例并填入默认值
@@ -42,10 +42,10 @@ namespace NovaFramework.Editor
             AssetDatabase.Refresh();
 
             //生成默认路径
-            CreateDefaultDirectories(configures, addLog);
+            CreateDefaultDirectories(configures);
             AssetDatabase.Refresh();
 
-            addLog?.Invoke($"已创建环境配置文件: {_environmentConfiguresPath}");
+            Logger.Info($"已创建环境配置文件: {_environmentConfiguresPath}");
         }
         
         private static void ApplyDefaults(EnvironmentConfigures configures)
@@ -70,7 +70,7 @@ namespace NovaFramework.Editor
             configures.aots.Add("UnityEngine.CoreModule.dll");
         }
 
-        private static void CreateDefaultDirectories(EnvironmentConfigures configures, Action<string> addLog = null)
+        private static void CreateDefaultDirectories(EnvironmentConfigures configures)
         {
             foreach (var variable in configures.variables)
             {
@@ -78,12 +78,12 @@ namespace NovaFramework.Editor
                 if (!Directory.Exists(fullPath))
                 {
                     Directory.CreateDirectory(fullPath);
-                    addLog?.Invoke($"已创建目录: {variable.value}");
+                    Logger.Info($"已创建目录: {variable.value}");
                 }
             }
         }
         
-        public void Uninstall(Action onMessage, Action onComplete, Action onError)
+        public void Uninstall(Action onComplete, Action onError)
         {
             AssetDatabase.DeleteAsset(_environmentConfiguresPath);
             onComplete?.Invoke();
