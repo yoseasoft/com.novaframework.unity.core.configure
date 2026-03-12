@@ -11,7 +11,7 @@ namespace NovaFramework.Editor
     {
         const string _environmentConfiguresPath = "Assets/Resources/EnvironmentConfigures.asset";
         
-        public void Install(Action onComplete, Action<string> addLog = null)
+        public void Install(Action onMessage, Action onComplete, Action onError, Action<string> addLog)
         {
             // 创建 EnvironmentConfigures 配置文件到 Resources 目录
             CreateEnvironmentConfigures(addLog);
@@ -83,7 +83,7 @@ namespace NovaFramework.Editor
             }
         }
         
-        public void Uninstall(Action onComplete = null)
+        public void Uninstall(Action onMessage, Action onComplete, Action onError)
         {
             AssetDatabase.DeleteAsset(_environmentConfiguresPath);
             onComplete?.Invoke();
