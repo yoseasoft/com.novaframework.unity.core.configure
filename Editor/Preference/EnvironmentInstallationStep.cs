@@ -10,6 +10,11 @@ namespace NovaFramework.Editor
     public class EnvironmentInstallationStep : InstallationStep
     {
         const string _environmentConfiguresPath = "Assets/Resources/EnvironmentConfigures.asset";
+
+        public bool IsInstall()
+        {
+            return File.Exists(Path.Combine(Application.dataPath, "..", _environmentConfiguresPath));
+        }
         
         public void Install(Action onComplete, Action onError)
         {
