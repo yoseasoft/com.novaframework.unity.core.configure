@@ -15,44 +15,62 @@ namespace NovaFramework.Editor
 
         public override void OnDraw()
         {
-            if (_configures == null)
+            EnvironmentInstallationStep installStep = new EnvironmentInstallationStep();
+
+            if (installStep.IsInstall())
             {
-                _configures = EnvironmentConfigures.Instance;
-                
                 if (_configures == null)
                 {
-                    EditorGUILayout.HelpBox("未找到 EnvironmentConfigures 资源文件，请在 Resources 目录下创建。", MessageType.Warning);
-                    return;
+                    _configures = EnvironmentConfigures.Instance;
+                
+                    if (_configures == null)
+                    {
+                        EditorGUILayout.HelpBox("未找到 EnvironmentConfigures 资源文件，请在 Resources 目录下创建。", MessageType.Warning);
+                        return;
+                    }
+                }
+
+                if (_serializedObject == null || _serializedObject.targetObject != _configures)
+                {
+                    _serializedObject = new SerializedObject(_configures);
+                }
+
+                _serializedObject.Update();
+
+                _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+
+                // 遍历绘制所有可见属性
+                SerializedProperty iterator = _serializedObject.GetIterator();
+                iterator.NextVisible(true); // 跳过 m_Script
+                while (iterator.NextVisible(false))
+                {
+                    EditorGUILayout.PropertyField(iterator, true);
+                }
+
+                EditorGUILayout.EndScrollView();
+
+                if (_serializedObject.hasModifiedProperties)
+                {
+                    _serializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(_configures);
+                    AssetDatabase.SaveAssets();
                 }
             }
-
-            if (_serializedObject == null || _serializedObject.targetObject != _configures)
+            
+            // 初始化按钮
+            GUIStyle initButtonStyle = RichTextUtils.GetButtonTextOnlyStyle(Color.green);
+            if (GUILayout.Button("初始化", initButtonStyle, GUILayout.Height(35)))
             {
-                _serializedObject = new SerializedObject(_configures);
-            }
-
-            _serializedObject.Update();
-
-            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-
-            // 遍历绘制所有可见属性
-            SerializedProperty iterator = _serializedObject.GetIterator();
-            iterator.NextVisible(true); // 跳过 m_Script
-            while (iterator.NextVisible(false))
-            {
-                EditorGUILayout.PropertyField(iterator, true);
-            }
-
-            EditorGUILayout.EndScrollView();
-
-            if (_serializedObject.hasModifiedProperties)
-            {
-                _serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(_configures);
-                AssetDatabase.SaveAssets();
+                installStep.Install(() =>
+                {
+                    Debug.Log("初始化完成");
+                }, () =>
+                {
+                    Debug.LogError("初始化失败");
+                });
             }
         }
-
+        
         private void OnGUI()
         {
             OnDraw();
