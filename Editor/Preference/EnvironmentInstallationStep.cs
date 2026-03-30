@@ -60,8 +60,8 @@ namespace NovaFramework.Editor
             configures.variables.Add(new SerializedVariableObject { key = "SOURCE_CODE_PATH", value = "Assets/Sources" });
             configures.variables.Add(new SerializedVariableObject { key = "AOT_LIBRARY_PATH", value = "Assets/_Resources/Aot" });
             configures.variables.Add(new SerializedVariableObject { key = "LINK_LIBRARY_PATH", value = "Assets/_Resources/Code" });
-            configures.variables.Add(new SerializedVariableObject { key = "CONTEXT_PATH", value = "Assets/_Resources/Context" });
-            configures.variables.Add(new SerializedVariableObject { key = "CONFIG_PATH", value = "Assets/_Resources/Config" });
+            //configures.variables.Add(new SerializedVariableObject { key = "CONTEXT_PATH", value = "Assets/_Resources/Context" });
+            //configures.variables.Add(new SerializedVariableObject { key = "CONFIG_PATH", value = "Assets/_Resources/Config" });
             configures.variables.Add(new SerializedVariableObject { key = "GUI_PATH", value = "Assets/_Resources/Gui/" });
 
             // modules
