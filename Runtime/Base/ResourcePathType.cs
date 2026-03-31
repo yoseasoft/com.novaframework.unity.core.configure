@@ -34,8 +34,8 @@ namespace NovaFramework
         ScriptFilePath,
         AotLibraryPath,
         LinkLibraryPath,
-        ContextPath,
-        ConfigPath,
+        ContextFilePath,
+        ConfigFilePath,
         ProtocolPath,
     }
 }
