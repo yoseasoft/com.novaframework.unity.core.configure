@@ -1,4 +1,6 @@
 /// -------------------------------------------------------------------------------
+/// NovaFramework Editor By UnityEngine
+///
 /// Copyright (C) 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
