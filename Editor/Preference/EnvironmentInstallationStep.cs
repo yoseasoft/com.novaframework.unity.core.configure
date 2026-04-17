@@ -9,7 +9,7 @@ namespace NovaFramework.Editor
 {
     public class EnvironmentInstallationStep : InstallationStep
     {
-        const string _environmentConfiguresPath = "Assets/Resources/EnvironmentConfigures.asset";
+        const string _environmentConfiguresPath = PresetConfiguration.DefaultInternalResourceRelativePath + "/EnvironmentConfigures.asset";
 
         public bool IsInstall()
         {
@@ -56,13 +56,13 @@ namespace NovaFramework.Editor
         private static void ApplyDefaults(EnvironmentConfigures configures)
         {
             // variables
-            configures.variables.Add(new SerializedVariableObject { key = "RAW_RESOURCE_PATH", value = "Assets/_Resources" });
+            configures.variables.Add(new SerializedVariableObject { key = "RAW_RESOURCE_PATH", value = PresetConfiguration.DefaultRawResourceRelativePath });
             configures.variables.Add(new SerializedVariableObject { key = "SOURCE_CODE_PATH", value = "Assets/Sources" });
-            configures.variables.Add(new SerializedVariableObject { key = "AOT_LIBRARY_PATH", value = "Assets/_Resources/Aot" });
-            configures.variables.Add(new SerializedVariableObject { key = "LINK_LIBRARY_PATH", value = "Assets/_Resources/Code" });
-            //configures.variables.Add(new SerializedVariableObject { key = "CONTEXT_FILE_PATH", value = "Assets/_Resources/Context" });
-            //configures.variables.Add(new SerializedVariableObject { key = "CONFIG_FILE_PATH", value = "Assets/_Resources/Config" });
-            configures.variables.Add(new SerializedVariableObject { key = "GUI_PATH", value = "Assets/_Resources/Gui" });
+            configures.variables.Add(new SerializedVariableObject { key = "AOT_LIBRARY_PATH", value = PresetConfiguration.DefaultRawResourceRelativePath + "/Aot" });
+            configures.variables.Add(new SerializedVariableObject { key = "LINK_LIBRARY_PATH", value = PresetConfiguration.DefaultRawResourceRelativePath + "/Code" });
+            //configures.variables.Add(new SerializedVariableObject { key = "CONTEXT_FILE_PATH", value = PresetConfiguration.DefaultRawResourceRelativePath + "/Context" });
+            //configures.variables.Add(new SerializedVariableObject { key = "CONFIG_FILE_PATH", value = PresetConfiguration.DefaultRawResourceRelativePath + "/Config" });
+            configures.variables.Add(new SerializedVariableObject { key = "GUI_PATH", value = PresetConfiguration.DefaultRawResourceRelativePath + "/Gui" });
 
             // modules
             configures.modules.Add(new SerializedLibraryObject { name = "Game", order = 1102, tags = new() { "Game", "Compile" } });
