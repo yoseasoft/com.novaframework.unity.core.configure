@@ -29,7 +29,7 @@ namespace NovaFramework
     public enum ResourcePathType : int
     {
         None = 0,
-        OriginalResourcePath,
+        RawResourcePath,
         SourceCodePath,
         ScriptFilePath,
         AotLibraryPath,

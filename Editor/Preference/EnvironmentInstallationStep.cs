@@ -56,7 +56,7 @@ namespace NovaFramework.Editor
         private static void ApplyDefaults(EnvironmentConfigures configures)
         {
             // variables
-            configures.variables.Add(new SerializedVariableObject { key = "ORIGINAL_RESOURCE_PATH", value = "Assets/_Resources" });
+            configures.variables.Add(new SerializedVariableObject { key = "RAW_RESOURCE_PATH", value = "Assets/_Resources" });
             configures.variables.Add(new SerializedVariableObject { key = "SOURCE_CODE_PATH", value = "Assets/Sources" });
             configures.variables.Add(new SerializedVariableObject { key = "AOT_LIBRARY_PATH", value = "Assets/_Resources/Aot" });
             configures.variables.Add(new SerializedVariableObject { key = "LINK_LIBRARY_PATH", value = "Assets/_Resources/Code" });
