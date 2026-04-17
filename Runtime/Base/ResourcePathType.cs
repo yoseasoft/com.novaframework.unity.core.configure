@@ -36,6 +36,5 @@ namespace NovaFramework
         LinkLibraryPath,
         ContextFilePath,
         ConfigFilePath,
-        ProtocolPath,
     }
 }
