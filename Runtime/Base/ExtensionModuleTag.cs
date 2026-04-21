@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +34,7 @@ namespace NovaFramework
     /// 框架加载的程序库的标签类型的枚举定义
     /// </summary>
     [Flags]
-    public enum LibraryTag : int
+    public enum ExtensionModuleTag : int
     {
         /// <summary>
         /// 无效

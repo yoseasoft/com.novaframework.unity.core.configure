@@ -31,7 +31,7 @@ namespace NovaFramework.Serialization
     /// 程序库数据模型的序列化对象类
     /// </summary>
     [Serializable]
-    public sealed class SerializedLibraryObject
+    public sealed class SerializedModuleObject
     {
         public string name;
         public int order;

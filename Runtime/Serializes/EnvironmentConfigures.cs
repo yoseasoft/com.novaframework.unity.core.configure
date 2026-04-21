@@ -42,7 +42,7 @@ namespace NovaFramework.Serialization
         // ----------------------------------------------------------------------------------------------------
         [Header("模组配置")]
 
-        public List<SerializedLibraryObject> modules = new();
+        public List<SerializedModuleObject> modules = new();
 
         // ----------------------------------------------------------------------------------------------------
         [Header("AOT配置")]

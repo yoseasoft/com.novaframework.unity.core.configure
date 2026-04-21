@@ -40,7 +40,7 @@ namespace NovaFramework.Editor
         /// </summary>
         public static Serialization.EnvironmentConfigures CreateAndSaveConfigureAsset(
             IReadOnlyList<Serialization.SerializedVariableObject> variableObjects,
-            IReadOnlyList<Serialization.SerializedLibraryObject> libraryObjects,
+            IReadOnlyList<Serialization.SerializedModuleObject> moduleObjects,
             IReadOnlyList<string> aotLibraryNames)
         {
             return AssetDatabaseUtils.CreateScriptableObjectAsset<Serialization.EnvironmentConfigures>(
@@ -51,7 +51,7 @@ namespace NovaFramework.Editor
                 asset.aots.Clear();
 
                 asset.variables.AddRange(variableObjects);
-                asset.modules.AddRange(libraryObjects);
+                asset.modules.AddRange(moduleObjects);
                 asset.aots.AddRange(aotLibraryNames);
             });
         }

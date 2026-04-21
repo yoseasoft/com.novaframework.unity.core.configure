@@ -65,8 +65,8 @@ namespace NovaFramework.Editor
             configures.variables.Add(new SerializedVariableObject { key = "GUI_PATH", value = PresetConfiguration.DefaultRawResourceRelativePath + "/Gui" });
 
             // modules
-            configures.modules.Add(new SerializedLibraryObject { name = "Game", order = 1102, tags = new() { "Game", "Compile" } });
-            configures.modules.Add(new SerializedLibraryObject { name = "GameHotfix", order = 1104, tags = new() { "Game", "Compile", "Hotfix" } });
+            configures.modules.Add(new SerializedModuleObject { name = "Game", order = 1102, tags = new() { "Game", "Compile" } });
+            configures.modules.Add(new SerializedModuleObject { name = "GameHotfix", order = 1104, tags = new() { "Game", "Compile", "Hotfix" } });
 
             // aots
             configures.aots.Add("System.Core.dll");
