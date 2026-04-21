@@ -74,6 +74,12 @@ namespace NovaFramework
         Hotfix = 0x0040,
 
         /// <summary>
+        /// 热插模组（支持动态组装），标识该模块属于插件模组，可进行热插入装载
+        /// </summary>
+        [Header("热插模组")]
+        Hotload = 0x0080,
+
+        /// <summary>
         /// 演示库，用于进行模块的功能演示，仅在调试模式下加载，发布模式将自动屏蔽
         /// </summary>
         [Header("教程库")]
