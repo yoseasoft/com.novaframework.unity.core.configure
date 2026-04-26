@@ -96,6 +96,7 @@ namespace NovaFramework
             if (!EditorApplication.isPlaying)
             {
                 Serialization.EnvironmentConfigures environmentConfigures = Serialization.EnvironmentConfigures.Instance;
+
                 AutoloadConfigurationModuleObjects(environmentConfigures.modules);
                 AutoloadConfigurationAotFileNames(environmentConfigures.aots);
             }
@@ -125,7 +126,7 @@ namespace NovaFramework
             for (int n = 0; n < _coreLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _coreLibraries[n];
-                if (null == callback || false == callback(info))
+                if (info.disabled || null == callback || false == callback(info))
                     continue;
 
                 assemblyNames.Add(info.name);
@@ -135,7 +136,7 @@ namespace NovaFramework
             for (int n = 0; n < _moduleLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _moduleLibraries[n];
-                if (null == callback || false == callback(info))
+                if (info.disabled || null == callback || false == callback(info))
                     continue;
 
                 assemblyNames.Add(info.name);
@@ -145,7 +146,7 @@ namespace NovaFramework
             for (int n = 0; n < _gameLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _gameLibraries[n];
-                if (null == callback || false == callback(info))
+                if (info.disabled || null == callback || false == callback(info))
                     continue;
 
                 assemblyNames.Add(info.name);
@@ -171,7 +172,7 @@ namespace NovaFramework
             for (int n = 0; n < _moduleLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _moduleLibraries[n];
-                if (null == callback || false == callback(info))
+                if (info.disabled || null == callback || false == callback(info))
                     continue;
 
                 assemblyNames.Add(info.name);
@@ -181,7 +182,7 @@ namespace NovaFramework
             for (int n = 0; n < _gameLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _gameLibraries[n];
-                if (null == callback || false == callback(info))
+                if (info.disabled || null == callback || false == callback(info))
                     continue;
 
                 assemblyNames.Add(info.name);
@@ -243,7 +244,7 @@ namespace NovaFramework
             for (int n = 0; n < _coreLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _coreLibraries[n];
-                if (assemblyName == info.name)
+                if (false == info.disabled && assemblyName == info.name)
                 {
                     return info;
                 }
@@ -252,7 +253,7 @@ namespace NovaFramework
             for (int n = 0; n < _moduleLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _moduleLibraries[n];
-                if (assemblyName == info.name)
+                if (false == info.disabled && assemblyName == info.name)
                 {
                     return info;
                 }
@@ -261,7 +262,7 @@ namespace NovaFramework
             for (int n = 0; n < _gameLibraries.Count; ++n)
             {
                 ExtensionModuleInfo info = _gameLibraries[n];
-                if (assemblyName == info.name)
+                if (false == info.disabled && assemblyName == info.name)
                 {
                     return info;
                 }
@@ -276,12 +277,12 @@ namespace NovaFramework
         /// 自动加载配置的模块信息
         /// </summary>
         /// <param name="moduleObjects">信息列表</param>
-        public void AutoloadConfigurationModuleObjects(IReadOnlyList<Serialization.SerializedModuleObject> moduleObjects)
+        private void AutoloadConfigurationModuleObjects(IReadOnlyList<Serialization.SerializedModuleObject> moduleObjects)
         {
             for (int n = 0; null != moduleObjects && n < moduleObjects.Count; ++n)
             {
-                Serialization.SerializedModuleObject libraryObject = moduleObjects[n];
-                RegisterModuleInfo(libraryObject.order, libraryObject.name, libraryObject.tags);
+                Serialization.SerializedModuleObject moduleObject = moduleObjects[n];
+                RegisterModuleInfo(moduleObject.order, moduleObject.name, moduleObject.disabled, moduleObject.tags);
             }
         }
 
@@ -290,8 +291,9 @@ namespace NovaFramework
         /// </summary>
         /// <param name="order">模块标签序号</param>
         /// <param name="name">模块标签名称</param>
+        /// <param name="disabled">模块禁用标识</param>
         /// <param name="tags">模块标签</param>
-        public void RegisterModuleInfo(int order, string name, IList<string> tags)
+        public void RegisterModuleInfo(int order, string name, bool disabled, IList<string> tags)
         {
             ExtensionModuleTag tag = ExtensionModuleTag.Unknown;
 
@@ -323,11 +325,11 @@ namespace NovaFramework
                 ExtensionModuleInfo tmp = container[n];
                 if (tmp.order == order || tmp.name == name)
                 {
-                    throw new ArgumentException("Module name is already registered.");
+                    throw new ArgumentException("The module order or name was already registered.");
                 }
             }
 
-            ExtensionModuleInfo info = new () { order = order, name = name, tags = tag };
+            ExtensionModuleInfo info = new () { order = order, name = name, disabled = disabled, tags = tag };
             container.Add(info);
         }
 
@@ -344,7 +346,7 @@ namespace NovaFramework
         /// 自动加载配置的预编译库名称
         /// </summary>
         /// <param name="libraryNames">库名称列表</param>
-        public void AutoloadConfigurationAotFileNames(IReadOnlyList<string> libraryNames)
+        private void AutoloadConfigurationAotFileNames(IReadOnlyList<string> libraryNames)
         {
             for (int n = 0; null != libraryNames && n < libraryNames.Count; ++n)
             {
@@ -360,7 +362,7 @@ namespace NovaFramework
         {
             if (_aotLibraries.Contains(name))
             {
-                throw new ArgumentException("AOT file name is already registered.");
+                throw new ArgumentException("The aot file name was already registered.");
             }
 
             _aotLibraries.Add(name);

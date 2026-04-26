@@ -33,8 +33,12 @@ namespace NovaFramework.Serialization
     [Serializable]
     public sealed class SerializedModuleObject
     {
-        public string name;
+        [UnityEngine.Tooltip("模组序号，用于进行模组加载排序及唯一性校验")]
         public int order;
+        [UnityEngine.Tooltip("模组名称，可通过此名称获取对应的模组程序集实例")]
+        public string name;
+        [UnityEngine.Tooltip("模组禁用标识，当该标识被激活后，此模组将处于禁用状态")]
+        public bool disabled;
 
         public List<string> tags = new();
     }

@@ -42,6 +42,11 @@ namespace NovaFramework
         public string name { get; internal set; }
 
         /// <summary>
+        /// 模块库禁用标识
+        /// </summary>
+        public bool disabled { get; internal set; }
+
+        /// <summary>
         /// 标签集合
         /// </summary>
         public ExtensionModuleTag tags { get; internal set; }
